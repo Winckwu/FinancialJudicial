@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>文件上传下载测试</title>
+</head>
+
+<script src="js/plugins/jquery/jquery.min.js"></script>
+<body>
+
+
+<p>单文件上传</p>
+<form method="POST" enctype="multipart/form-data" action="/upload">
+    File to upload: <input type="file" name="file"  /><br/>
+    <input type="submit" value="Upload" />
+    Press here to upload the file!
+</form>
+
+<form method="GET" enctype="multipart/form-data" action="/download">
+    File to upload: <input type="file" name="fileName" /><br/>
+    <input type="submit" value="Download" />
+    Press here to download the file!
+</form>
+
+<br />
+<br />
+
+<input type="button" onclick="download()" value="Download" />
+
+<br /><br />
+
+<input type="file" id="uploadFile" />
+
+<input type="button" value="upload" onclick="upload()" />
+
+<script type="text/javascript">
+    function download() {
+        $.get('/download',{fileName:"caseTemplate.xlsx"},
+        function (resultMsg) {
+            alert(resultMsg);
+        })
+    }
+    function upload() {
+        var uploadFile=document.querySelector("#uploadFile").files[0];
+        $.post('/upload',{file:uploadFile},
+                function (resultMsg) {
+                    alert(resultMsg);
+                })
+    }
+</script>
+
+</body>
+</html>

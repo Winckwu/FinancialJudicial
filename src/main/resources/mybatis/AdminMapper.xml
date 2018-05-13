@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.no7player.mapper.AdminMapper">
+    <resultMap id="BaseResultMap" type="cn.no7player.model.Admin">
+        <id column="admin_id" jdbcType="INTEGER" property="adminId" />
+        <result column="admin_name" jdbcType="VARCHAR" property="adminName" />
+        <result column="admin_pwd" jdbcType="VARCHAR" property="adminPwd" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        admin_id, admin_name, admin_pwd
+    </sql>
+
+    <select id="selectByAdminName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from admin
+        where admin_name = #{adminName,jdbcType=INTEGER}
+    </select>
+
+    <update id="update" parameterType="cn.no7player.model.Admin">
+        update admin
+        set  admin_pwd = #{adminPwd,jdbcType=VARCHAR}
+        where admin_id = #{adminId,jdbcType=INTEGER}
+    </update>
+
+</mapper>

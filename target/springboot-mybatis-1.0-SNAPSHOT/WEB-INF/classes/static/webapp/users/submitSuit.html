@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- META SECTION -->
+    <title>发布诉讼 -- 互联网金融司法诉讼平台</title>
+    <link rel="shortcut icon" href="../assets/images/gt_header.png">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <link rel="icon" href="favicon.ico" type="image/x-icon"/>
+    <!-- END META SECTION -->
+
+    <!-- CSS INCLUDE -->
+    <link rel="stylesheet" href="layer/css/layui.css">
+    <link rel="stylesheet" type="text/css" id="theme" href="css/theme-default.css"/>
+
+
+    <script type="text/javascript">
+        function download() {
+            $.get('/download', {fileName: "caseTemplate.xls"},
+                    function (resultMsg) {
+                        alert(resultMsg);
+                    })
+        }
+        window.onload = function () {
+            $.post('/baseInfo',
+                    function (result_str) {
+                        var strArr = result_str.split("|");
+                        document.getElementById("leftUserName").innerHTML = strArr[0];
+                        document.getElementById("leftUserName").value = strArr[0];
+                        document.getElementById("topUserName").innerHTML = strArr[0];
+                    }
+            );
+
+            function getYMD(s) {
+                var t = new Date(s).toLocaleDateString(), r = t.match(/\d+/g);
+                return r ? r[0] + "-" + ("0" + r[1]).slice(-2) + "-" + ("0" + r[2]).slice(-2) : "日期错误";
+            }
+
+            var tableDate = "";
+            $.get('/suitInfo', {},
+                    function (case_str) {
+                        var caseArr = eval("(" + case_str + ")");
+                        //alert(caseArr);
+                        //userEmail:document.getElementById("leftUserName").value
+                        for (var i = 0; i < caseArr.length; i++) {
+                            tableDate += "<tr><td width='80px' nowrap='nowrap'><div style='position: relative;'><input name='selected' type='checkbox' class='icheckbox' onclick='checkstatus()'></div></td>"
+                                    + "<td width='100px' nowrap='nowrap'>" + caseArr[i].casestatus + "</td>"
+                                    + "<td width='190px' nowrap='nowrap'><div class='col-md-6' style=' padding-left: 0px; padding-right: 0px;'><button class='btn btn-info btn-block' data-toggle='modal' data-target='#uploadEvi' style='font-size: 13px;border-radius: 5px;width: 80px;padding-left: 4px;'> <i class='fa fa-legal'></i>上传证据</button></div> <div class='col-md-6'> <button class='btn btn-info btn-block'data-toggle='modal' data-target='#viewSig' style='font-size: 13px;border-radius: 5px;width: 80px;padding-left: 4px;'> <i class='fa fa-eye'></i>查看签名 </button> </div> </td>"
+                                    + "<td width='100px' nowrap='nowrap'>" + caseArr[i].trustLawyer + "</td>"
+                                    + "<td width='100px' nowrap='nowrap'>" + caseArr[i].serviceType + "</td>"
+                                    + "<td width='150px' nowrap='nowrap'>" + caseArr[i].caseId + "</td>"
+                                    + "<td width='150px' nowrap='nowrap'>" + caseArr[i].contractNum + "</td>"
+                                    + "<td width='150px' nowrap='nowrap'>" + caseArr[i].debtPlat + "</td>"
+                                    + "<td width='100px' nowrap='nowrap'>" + caseArr[i].productName + "</td>"
+                                    + "<td width='200px' nowrap='nowrap'>" + caseArr[i].inverProj + "</td>"
+                                    + "<td width='150px' nowrap='nowrap'>" + caseArr[i].inverName + "</td>"
+                                    + "<td width='100px' nowrap='nowrap'>" + caseArr[i].inverIdcard + "</td>"
+                                    + "<td width='150px' nowrap='nowrap'>" + caseArr[i].inverAdd + "</td>"
+                                    + "<td width='150px' nowrap='nowrap'>" + caseArr[i].debtName + "</td>"
+                                    + "<td width='100px' nowrap='nowrap'>" + caseArr[i].debtIdcard + "</td>"
+                                    + "<td width='200px' nowrap='nowrap'>" + caseArr[i].debtAdd + "</td>"
+                                    + "<td width='100px' nowrap='nowrap'>" + caseArr[i].loanTerm + "</td>"
+                                    + "<td width='100px' nowrap='nowrap'>" + getYMD(caseArr[i].loanDate) + "</td>"
+                                    + "<td width='100px' nowrap='nowrap'>" + getYMD(caseArr[i].repayData) + "</td>"
+                                    + "<td width='100px' nowrap='nowrap'>" + getYMD(caseArr[i].overdueDate) + "</td>"
+                                    + "<td width='100px' nowrap='nowrap'>" + caseArr[i].overdueDays + "</td>"
+                                    + "<td width='100px' nowrap='nowrap'>" + caseArr[i].contractMoney + "</td>"
+                                    + "<td width='100px' nowrap='nowrap'>" + caseArr[i].paidPrincipal + "</td>"
+                                    + "<td width='100px' nowrap='nowrap'>" + caseArr[i].paidInterest + "</td>"
+                                    + "<td width='100px' nowrap='nowrap'>" + caseArr[i].agreedInterest + "</td>"
+                                    + "<td width='100px' nowrap='nowrap'>" + caseArr[i].overdueRate + "</td>"
+                                    + "<td width='100px' nowrap='nowrap'>" + caseArr[i].overduePenalty + "</td>"
+                                    + "<td width='100px' nowrap='nowrap'>" + caseArr[i].platFee + "</td>"
+                                    + "<td width='100px' nowrap='nowrap'>" + caseArr[i].overduePrincipal + "</td>"
+                                    + "<td width='100px' nowrap='nowrap'>" + caseArr[i].overdueInterest + "</td>"
+                                    + "<td width='100px' nowrap='nowrap'>" + caseArr[i].feeTotal + "</td>"
+                                    + "<td width='100px' nowrap='nowrap'>" + caseArr[i].remark + "</td></tr>";
+                        }
+                        $("#suitInfo").html(tableDate);
+                    }
+            )
+        }
+
+        function fabu() {
+            var checklist = document.getElementsByName("selected");
+            var casesid = "";
+            for (var i = 0; i < checklist.length; i++) {
+                if (checklist[i].checked) {
+                    var che = checklist[i];
+                    var caseid = che.parentNode.parentNode.parentNode.childNodes[5].childNodes["0"].data;
+                    var casesid = casesid + " " + caseid;
+                }
+            }
+            if (casesid == "") {
+                document.getElementById("quedingfabu").disabled = true;
+                document.getElementById("casesidnow").innerHTML = "暂无";
+            }
+            else {
+                document.getElementById("quedingfabu").disabled = false;
+                document.getElementById("casesidnow").innerHTML = casesid;
+            }
+        }
+
+        function fabutype() {
+            var selectedcasesid = document.getElementById("casesidnow").innerHTML;
+            var radio = document.getElementsByName("optionsRadiosinline");
+            var selectvalue = null;   //  selectvalue为radio中选中的值
+            for (var i = 0; i < radio.length; i++) {
+                if (radio[i].checked == true) {
+                    selectvalue = radio[i].value;
+                    break;
+                }
+            }
+            $.post('/submitSuit', {selectedcasesid: selectedcasesid, selectvalue: selectvalue}, function (data) {
+                if(data!=null)
+                    alert("已发布该案件");
+            })
+        }
+
+        function selectAll() {
+            var checklist = document.getElementsByName("selected");
+            if (document.getElementsByName("controlAll")[0].checked) {
+                for (var i = 0; i < checklist.length; i++) {
+                    checklist[i].checked = true;
+                }
+            } else {
+                for (var j = 0; j < checklist.length; j++) {
+                    checklist[j].checked = false;
+                }
+            }
+        }
+
+        function checkstatus() {
+            var selectstatus="";
+            var checklist = document.getElementsByName("selected");
+            for (var i = 0; i < checklist.length; i++) {
+                if (checklist[i].checked) {
+                    var che = checklist[i];
+                    var status = che.parentNode.parentNode.parentNode.childNodes[1].childNodes["0"].data;
+                    if(status!="提交未发布")
+                        selectstatus=status;
+                }
+            }
+            if(selectstatus!="")
+                document.getElementById("fabu").disabled = true;
+            else
+                document.getElementById("fabu").disabled = false;
+        }
+    </script>
+    <!-- EOF CSS INCLUDE -->
+</head>
+<body>
+
+
+<!-- START PAGE CONTAINER -->
+<div class="page-container">
+
+    <!-- START PAGE SIDEBAR -->
+    <div class="page-sidebar">
+        <!-- START X-NAVIGATION -->
+        <ul class="x-navigation">
+            <li class="xn-logo">
+                <a href="personalCenter.html" style="background-color: #1d2127;">
+                    <img src="../assets/images/logo.png"
+                         style="width: 220px;margin-top: -10px;margin-left: -16px;"></a>
+                <a href="#" class="x-navigation-control"></a>
+            </li>
+            <li class="xn-profile">
+                <a href="#" class="profile-mini">
+                    <img src="assets/images/users/avatar.jpg" alt="John Doe"/>
+                </a>
+                <div class="profile">
+                    <div class="profile-image">
+                        <a href="../index1.html" target="_blank"><img src="assets/images/users/avatar.jpg"
+                                                                      alt="John Doe" alt="图片说明" title="点击修改头像"
+                                                                      style="margin-top: 10px;"/></a>
+                    </div>
+                    <div class="profile-data">
+                        <div class="profile-data-name" id="leftUserName" style="margin-top: 5px;"></div>
+                    </div>
+                </div>
+            </li>
+            <li class="xn-title" style="padding-top: 15px;padding-bottom: 15px;">欢迎来到互联网金融司法诉讼平台</li>
+            <li>
+                <a href="personalCenter.html" style="font-size: 15px;"><span class="fa fa-user"></span> <span
+                        class="xn-text">个人中心</span></a>
+            </li>
+            <li>
+                <a href="basicInfo.html" style="font-size: 15px;"><span class="fa fa-file-text-o"></span> <span
+                        class="xn-text">基本信息</span></a>
+
+            </li>
+            <li>
+                <a href="securityCenter.html"><span class="fa fa-cogs"></span> <span class="xn-text"
+                                                                                     style="font-size: 15px;">安全中心</span></a>
+            </li>
+            <li class="active">
+                <a href="#"><span class="fa fa-suitcase"></span> <span class="xn-text"
+                                                                       style="font-size: 15px;">发布诉讼</span></a>
+            </li>
+            <li>
+                <a href="myCases.html"><span class="fa fa-archive"></span> <span class="xn-text"
+                                                                                 style="font-size: 15px;">我的案件</span></a>
+            </li>
+        </ul>
+        <!-- END X-NAVIGATION -->
+    </div>
+    <!-- END PAGE SIDEBAR -->
+
+    <!-- PAGE CONTENT -->
+    <div class="page-content">
+
+        <!-- START X-NAVIGATION VERTICAL -->
+        <ul class="x-navigation x-navigation-horizontal x-navigation-panel">
+            <!-- TOGGLE NAVIGATION -->
+            <li class="xn-icon-button">
+                <a href="#" class="x-navigation-minimize"><span class="fa fa-dedent"></span></a>
+            </li>
+            <!-- END TOGGLE NAVIGATION -->
+            <!-- SIGN OUT -->
+            <li class="xn-icon-button pull-right">
+                <a href="#" class="mb-control" data-box="#mb-signout"><span class="fa fa-sign-out"></span></a>
+            </li>
+            <!-- END SIGN OUT -->
+            <!-- MESSAGES -->
+            <li class="xn-icon-button pull-right">
+
+                <a href="personalCenter.html" style="padding-left: 0px;width: 150px;padding-right: 0px;"
+                   id="topUserName"></a>
+
+            </li>
+            <!-- END MESSAGES -->
+            <!-- Hello -->
+            <li class="xn-icon-button pull-right">
+                <a style="width: 60px;">您好，</a>
+
+            </li>
+            <!-- END Hello -->
+        </ul>
+        <!-- END X-NAVIGATION VERTICAL -->
+
+
+        <!-- START BREADCRUMB -->
+        <ul class="breadcrumb">
+            <li><a href="#">发布诉讼</a></li>
+        </ul>
+        <!-- END BREADCRUMB -->
+
+        <!-- PAGE CONTENT WRAPPER -->
+        <div class="page-content-wrap">
+
+            <!-- START WIDGETS -->
+            <div class="row">
+
+                <div class="col-md-12">
+
+                    <!-- START VISITORS BLOCK -->
+                    <div class="panel panel-default">
+
+                        <div class="panel-body widget widget-default widget-item-icon"
+                             style="margin-bottom: 0px; padding-top: 0px;height: 955px;">
+
+                            <div class="row" style="height: 15px;background: #1caf9a; "></div>
+
+                            <div class="row"
+                                 style="height: 100px;margin-top: -20px;border-radius: 5px;margin-left: -200px;margin-bottom: 25px;">
+
+                                <div class="col-md-2"></div>
+                                <div class="col-md-2">
+                                    <div class="btn btn-info btn-file" style="
+                                             font-size: 16px;
+                                             top: 60px;
+                                             height: 37.139700000000005px;
+                                             padding-top: 6px;
+                                             padding-bottom: 6px;
+                                              border-radius: 5px;
+
+                                        "><i class="glyphicon glyphicon-floppy-save"></i>
+                                        <input type="button" class="btn btn-info" onclick="download()"
+                                               style="font-size: 16px;margin-top: -3px" data-preview-file-type="any"
+                                               value="下载案件模板"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-2" style="height: 25px">
+
+                                    <div class="btn btn-info btn-file" style="
+                                             font-size: 16px;
+                                             top: 60px;
+                                             height: 37.139700000000005px;
+                                             padding-top: 6px;
+                                             padding-bottom: 6px;
+                                             border-radius: 5px;
+                                             width: 153px;
+                                        ">
+                                        <i class="glyphicon glyphicon-floppy-open"></i>
+                                        <input type="button" class="btn btn-info" data-toggle="modal"
+                                               data-target="#upload"
+                                               style="font-size: 16px;margin-top: -3px"
+                                               value="上传案件"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 模态框（Modal） -->
+                            <div class="modal fade" id="upload" tabindex="-1" role="dialog"
+                                 aria-labelledby="uploadLabel1" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal"
+                                                    aria-hidden="true">×
+                                            </button>
+                                            <h4 class="modal-title" id="uploadLabel1">
+                                                上传案件
+                                            </h4>
+                                        </div>
+                                        <form method="POST" enctype="multipart/form-data" action="/upload">
+                                            <div class="modal-body" style="margin: 15px 200px">
+                                                <input type="file" name="file"/><br/>
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                                                </button>
+                                                <input type="submit" class="btn btn-primary" value="开始上传"/>
+                                            </div>
+                                        </form>
+                                    </div><!-- /.modal-content -->
+                                </div><!-- /.modal-dialog -->
+                            </div><!-- /.modal -->
+                            <script>
+                                $(function () {
+                                    $('#upload').modal({
+                                        keyboard: true
+                                    })
+                                });
+                            </script>
+
+
+                            <hr style=" width: 1000px;margin-left: 50px; margin-bottom: 35px;">
+
+                            <div class="row" style="height: 60px; margin-top: 40px;">
+
+                                <div class="col-md-2">
+                                    <div class="widget-title"
+                                         style=" margin-top: 5px; font-weight: 600;margin-left: 55px;">债务平台
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group has-warning">
+
+                                        <input type="text" name="corp_name" class="form-control"
+
+                                               value="" style="font-size: 16px;">
+                                    </div>
+                                </div>
+                                <div class="col-md-1"></div>
+                                <div class="col-md-1">
+                                    <div class="widget-title" style=" margin-top: 5px; font-weight: 600;">委托日期</div>
+                                </div>
+                                <div class="col-md-1">
+                                    <div class="widget-title"
+                                         style=" margin-top: 5px; font-weight: 600;margin-left: -45px;">自
+                                    </div>
+                                </div>
+                                <div class="col-md-1">
+                                    <form class="form-horizontal" role="form">
+                                        <div class="form-group has-warning" style="margin-top: -20px;">
+                                            <label class=" control-label"></label>
+                                            <div>
+                                                <input type="text" class="form-control datepicker" value="2016-12-07"
+                                                       style="margin-left: -72px;">
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="col-md-1">
+                                    <div class="widget-title"
+                                         style=" margin-top: 5px; font-weight: 600;margin-left: -100px;">至
+                                    </div>
+                                </div>
+                                <div class="col-md-1">
+                                    <form class="form-horizontal" role="form">
+                                        <div class="form-group has-warning" style="margin-top: -20px;">
+                                            <label class=" control-label"></label>
+                                            <div>
+                                                <input type="text" class="form-control datepicker" value="2016-12-07"
+                                                       style="margin-left: -130px;">
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+
+                            </div>
+                            <div class="row" style="height: 60px;">
+                                <div class="col-md-2">
+                                    <div class="widget-title"
+                                         style=" margin-top: 5px; font-weight: 600;margin-left: 55px;">ID号
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group has-warning">
+
+                                        <input type="text" name="corp_name" class="form-control"
+
+                                               value="" style="font-size: 16px;">
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="widget-title"
+                                         style=" margin-top: 5px; font-weight: 600;margin-left: 55px;">产品名称
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group has-warning">
+
+                                        <input type="text" name="corp_name" class="form-control"
+
+                                               value="" style="font-size: 16px;">
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-2">
+                                <div class="widget-title" style=" margin-top: 5px; font-weight: 600;margin-left: 55px;">
+                                    服务类型
+                                </div>
+                            </div>
+
+                            <div class="col-md-2" style="margin-top: -5px;">
+                                <div class="form-group has-warning"
+                                     style="padding-bottom: 5px;padding-top: 5px;
+                                         width: 165px;
+                                         margin-left: 1px;
+                                    ">
+                                    <select class="form-control select" style="display: block;">
+                                        <option>全部</option>
+                                        <option>诉讼</option>
+                                        <option>律师函</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="widget-title"
+                                     style=" margin-top: 5px; font-weight: 600;margin-left: 55px;">状态
+                                </div>
+                            </div>
+                            <div class="col-md-2" style="margin-top: -5px;">
+                                <div class="form-group has-warning"
+                                     style="padding-bottom: 5px;padding-top: 5px;
+                                         width: 165px;
+                                         margin-left: 1px;
+                                    ">
+                                    <select class="form-control select" style="display: block;">
+                                        <option>全部</option>
+                                        <option>已接单</option>
+                                        <option>未接单</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-2"></div>
+                            <div class="col-md-2">
+                                <button class="btn btn-info btn-block"
+                                        style="font-size: 16px;height: 38px;border-radius: 5px;width: 112px;margin-left: -50px;margin-top: -65px;">
+                                    <i class="glyphicon glyphicon-search"></i>查询
+                                </button>
+
+                            </div>
+
+                            <div class="row" style=" margin-top: 60px;">
+
+                                <div class="col-md-11"
+                                     style="padding-right: 0px;margin-left: 0px;width: 1080px;padding-left: 25px;">
+                                    <!-- START DEFAULT TABLE EXPORT -->
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title" style="font-family: 微软雅黑; font-size: 18px;">
+                                                案件列表</h3>
+                                            <div class="btn-group pull-right">
+                                                <button id="fabu" class="btn btn-danger " data-toggle="modal"
+                                                        data-target="#publishEvi"
+                                                        style="right: 50px;font-size: 15px;" onclick="fabu()"><i
+                                                        class="fa fa-location-arrow"></i> 发布
+                                                </button>
+
+                                                <button class="btn btn-danger dropdown-toggle" data-toggle="dropdown"
+                                                        style=" right: 25px;"><i
+                                                        class="fa fa-bars"></i> 导出数据
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <li class="divider"></li>
+                                                    <li><a href="#"
+                                                           onClick="$('#customers2').tableExport({type:'excel',escape:'false'});"><img
+                                                            src='img/icons/xls.png' width="24"/> Excel</a></li>
+                                                    <li><a href="#"
+                                                           onClick="$('#customers2').tableExport({type:'doc',escape:'false'});"><img
+                                                            src='img/icons/word.png' width="24"/> Word</a></li>
+                                                    <li><a href="#"
+                                                           onClick="$('#customers2').tableExport({type:'powerpoint',escape:'false'});"><img
+                                                            src='img/icons/ppt.png' width="24"/> PowerPoint</a></li>
+                                                    <li class="divider"></li>
+                                                    <li><a href="#"
+                                                           onClick="$('#customers2').tableExport({type:'png',escape:'false'});"><img
+                                                            src='img/icons/png.png' width="24"/> PNG</a></li>
+                                                    <li><a href="#"
+                                                           onClick="$('#customers2').tableExport({type:'pdf',escape:'false'});"><img
+                                                            src='img/icons/pdf.png' width="24"/> PDF</a></li>
+                                                </ul>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="panel-body panel-body-table" style=" height: 480px;">
+                                            <div style="overflow-x: auto; overflow-y: auto;height:440px; ">
+                                                <table id="customers2" class="table datatable_simple">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>
+                                                            <div style="position: relative;">
+                                                                <input id="controlAll"
+                                                                       onclick="selectAll();checkstatus();"
+                                                                       name="controlAll"
+                                                                       type="checkbox"
+                                                                       class="icheckbox">
+                                                                全选
+                                                            </div>
+                                                        </th>
+                                                        <th>状态</th>
+                                                        <th>上传资料</th>
+                                                        <th>委托律师</th>
+                                                        <th>服务类型</th>
+                                                        <th>ID号</th>
+                                                        <th>合同号</th>
+                                                        <th>债务产生平台</th>
+                                                        <th>产品名称</th>
+                                                        <th>投资项目名称</th>
+                                                        <th>投资人姓名</th>
+                                                        <th>投资人身份证</th>
+                                                        <th>投资人居住地</th>
+                                                        <th>债务人</th>
+                                                        <th>债务人身份证</th>
+                                                        <th>债务人居住地</th>
+                                                        <th>贷款期限</th>
+                                                        <th>放款日期</th>
+                                                        <th>还款日</th>
+                                                        <th>逾期日期</th>
+                                                        <th>逾期天数</th>
+                                                        <th>合同金额</th>
+                                                        <th>已还本金</th>
+                                                        <th>已还利息</th>
+                                                        <th>约定利息</th>
+                                                        <th>逾期利率</th>
+                                                        <th>逾期违约金</th>
+                                                        <th>平台服务费</th>
+                                                        <th>逾期本金</th>
+                                                        <th>逾期利息</th>
+                                                        <th>合计</th>
+                                                        <th>备注</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody id="suitInfo">
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- END DEFAULT TABLE EXPORT -->
+
+                                <!-- 模态框（publishEvi） -->
+                                <div class="modal fade" id="publishEvi" tabindex="-1" role="dialog"
+                                     aria-labelledby="uploadLabel2" aria-hidden="true"
+                                >
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                        aria-hidden="true">×
+                                                </button>
+                                                <h4 class="modal-title" id="uploadLabel2">
+                                                    发布
+                                                </h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div style="float: left">已选择的案件ID号有：</div>
+                                                <div id="casesidnow"></div>
+                                                <div style="margin-top: 20px;float: left">
+                                                    请选择发布方式：
+                                                </div>
+
+                                                <form class="layui-form" action="">
+                                                    <div class="layui-form-item">
+                                                        <div class="layui-input-block">
+                                                            <input name="optionsRadiosinline" id="optionsRadios1" title="诉讼" type="radio" checked="" value="诉讼">
+                                                            <input name="optionsRadiosinline" id="optionsRadios2" title="律师函" type="radio" value="律师函">
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default"
+                                                        data-dismiss="modal" onclick="window.location.reload();">关闭
+                                                </button>
+                                                <button type="button" id="quedingfabu" class="btn btn-primary"
+                                                        onclick="fabutype()">
+                                                    确定
+                                                </button>
+                                            </div>
+                                        </div><!-- /.modal-content -->
+                                    </div><!-- /.modal-dialog -->
+                                </div><!-- /.modal -->
+                                <script>
+                                    $(function () {
+                                        $('#publishEvi').modal({
+                                            keyboard: true
+                                        })
+                                    });
+                                </script>
+
+
+                                <!-- 模态框（uploadEvi） -->
+                                <div class="modal fade" id="uploadEvi" tabindex="-1" role="dialog"
+                                     aria-labelledby="uploadLabel3" aria-hidden="true"
+                                >
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                        aria-hidden="true">×
+                                                </button>
+                                                <h4 class="modal-title" id="uploadLabel3">
+                                                    上传证据
+                                                </h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                周大涛是智障！
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default"
+                                                        data-dismiss="modal">关闭
+                                                </button>
+                                                <button type="button" class="btn btn-primary">
+                                                    上传
+                                                </button>
+                                            </div>
+                                        </div><!-- /.modal-content -->
+                                    </div><!-- /.modal-dialog -->
+                                </div><!-- /.modal -->
+                                <script>
+                                    $(function () {
+                                        $('#uploadEvi').modal({
+                                            keyboard: true
+                                        })
+                                    });
+                                </script>
+
+
+                                <!-- 模态框（viewSig） -->
+                                <div class="modal fade" id="viewSig" tabindex="-1" role="dialog"
+                                     aria-labelledby="uploadLabel4" aria-hidden="true"
+                                >
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                        aria-hidden="true">×
+                                                </button>
+                                                <h4 class="modal-title" id="uploadLabel4">
+                                                    查看签名
+                                                </h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                周大涛是智障！
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default"
+                                                        data-dismiss="modal">关闭
+                                                </button>
+                                                <button type="button" class="btn btn-primary">
+                                                    上传
+                                                </button>
+                                            </div>
+                                        </div><!-- /.modal-content -->
+                                    </div><!-- /.modal-dialog -->
+                                </div><!-- /.modal -->
+                                <script>
+                                    $(function () {
+                                        $('#viewSig').modal({
+                                            keyboard: true
+                                        })
+                                    });
+                                </script>
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+                </div>
+
+
+                <!-- END VISITORS BLOCK -->
+
+            </div>
+
+            <!-- END WIDGETS -->
+
+
+        </div>
+        <!-- END PAGE CONTENT WRAPPER -->
+    </div>
+    <!-- END PAGE CONTENT -->
+</div>
+<!-- END PAGE CONTAINER -->
+
+
+<!-- MESSAGE BOX-->
+<div class="message-box animated fadeIn" data-sound="alert" id="mb-signout">
+    <div class="mb-container">
+        <div class="mb-middle">
+            <div class="mb-title"><span class="fa fa-sign-out"></span> 注 <strong>销</strong> ?</div>
+            <div class="mb-content">
+                <p>选择是注销当前用户，选择否将继续停留在该页面。</p>
+
+            </div>
+            <div class="mb-footer">
+                <div class="pull-right">
+                    <a href="../signin.html" class="btn btn-success btn-lg">是</a>
+                    <button class="btn btn-default btn-lg mb-control-close">否</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END MESSAGE BOX-->
+
+<!-- START PRELOADS -->
+<audio id="audio-alert" src="audio/alert.mp3" preload="auto"></audio>
+<audio id="audio-fail" src="audio/fail.mp3" preload="auto"></audio>
+<!-- END PRELOADS -->
+
+<script src="layer/layui.js"></script>
+<script>
+    //一般直接写在一个js文件中
+    layui.use(['layer', 'form'], function(){
+        var layer = layui.layer
+                ,form = layui.form();
+    });
+</script>
+
+<!-- START SCRIPTS -->
+<!-- START PLUGINS -->
+<script type="text/javascript" src="js/plugins/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="js/plugins/jquery/jquery-ui.min.js"></script>
+<script type="text/javascript" src="js/plugins/bootstrap/bootstrap.min.js"></script>
+<script src="layer/layer.js"></script>
+<!-- END PLUGINS -->
+
+<!-- START THIS PAGE PLUGINS-->
+<script type='text/javascript' src='js/plugins/icheck/icheck.min.js'></script>
+<script type="text/javascript" src="js/plugins/mcustomscrollbar/jquery.mCustomScrollbar.min.js"></script>
+<script type="text/javascript" src="js/plugins/scrolltotop/scrolltopcontrol.js"></script>
+
+<script type="text/javascript" src="js/plugins/morris/raphael-min.js"></script>
+<script type="text/javascript" src="js/plugins/morris/morris.min.js"></script>
+<script type="text/javascript" src="js/plugins/rickshaw/d3.v3.js"></script>
+<script type="text/javascript" src="js/plugins/rickshaw/rickshaw.min.js"></script>
+<script type='text/javascript' src='js/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js'></script>
+<script type='text/javascript' src='js/plugins/jvectormap/jquery-jvectormap-world-mill-en.js'></script>
+<script type='text/javascript' src='js/plugins/bootstrap/bootstrap-datepicker.js'></script>
+<script type="text/javascript" src="js/plugins/owl/owl.carousel.min.js"></script>
+
+<script type="text/javascript" src="js/plugins/moment.min.js"></script>
+<script type="text/javascript" src="js/plugins/daterangepicker/daterangepicker.js"></script>
+<!-- END THIS PAGE PLUGINS-->
+
+<!-- START TEMPLATE -->
+<script type="text/javascript" src="js/settings.js"></script>
+
+<script type="text/javascript" src="js/plugins.js"></script>
+<script type="text/javascript" src="js/actions.js"></script>
+
+<script type="text/javascript" src="js/demo_dashboard.js"></script>
+<!-- END TEMPLATE -->
+<!-- END SCRIPTS -->
+</body>
+</html>
+
+
+
+
+

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Sergey Pozhilov (GetTemplate.com)">
+
+    <title>账户登陆--互联网金融司法诉讼平台</title>
+
+    <link rel="shortcut icon" href="assets/images/gt_header.png">
+
+    <link rel="stylesheet" media="screen" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/font-awesome.min.css">
+
+    <!-- Custom styles for our template -->
+    <link rel="stylesheet" href="assets/css/bootstrap-theme.css" media="screen">
+    <link rel="stylesheet" href="assets/css/main.css">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="assets/js/html5shiv.js"></script>
+    <script src="assets/js/respond.min.js"></script>
+    <script src="js/plugins/jquery/jquery.min.js"></script>
+    <![endif]-->
+</head>
+
+
+<body background="assets/images/2.jpg">
+
+<div class="navbar navbar-inverse navbar-fixed-top headroom">
+
+    <div class="container">
+        <!-- <img border='0' src='assets/images/1.jpg' width='100%' height='100%' style='position: absolute;left:0px;top:0px;z-index: -1'> -->
+        <div class="navbar-header">
+
+            <!-- Button for smallest screens -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><span
+                    class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span></button>
+            <a class="navbar-brand" href="index1.html"><img src="assets/images/finance.png"
+                                                            alt="Progressus HTML5 template"
+                                                            style="float:left; width:50px;margin-top: -11px;">
+                <img src="assets/images/logo.png" alt="Progressus HTML5 template"
+                     style=" width: 400px; margin-top: -25px; "></a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav pull-right">
+                <li><a class="btn" href="index1.html">首页</a></li>
+                <li><a class="btn" href="signin.html">登陆</a></li>
+                <li><a class="btn" href="signup.html">注册</a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</div>
+<!-- /.navbar -->
+
+<header id="head" class="secondary"></header>
+
+<!-- container -->
+<div class="container">
+
+
+    <div class="row">
+
+        <!-- Article main content -->
+        <article class="col-xs-12 maincontent" style="margin-bottom: 100px; margin-top: 40px;">
+            <!-- <header class="page-header">
+                <h1 class="page-title">登陆</h1>
+            </header> -->
+
+            <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h3 class="thin text-center">登陆您的账户</h3>
+                        <p class="text-center text-muted" style=" margin-right: -400px" ;><a href="signup.html" style=" color: #FF9B22; font-size: 16px;">立即注册</a>
+                        </p>
+                        <hr style="width: 460px;">
+
+                        <form>
+                            <div class="top-margin" style=" margin-left: 25px; margin-right: 25px;">
+                                <label>请输入手机号或邮箱<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="userName">
+                            </div>
+                            <div class="top-margin" style=" margin-left: 25px; margin-right: 25px;">
+                                <label>请输入密码 <span class="text-danger">*</span></label><span id="worringMsg"  style="font-size: smaller;color: #FF9B22;margin-left:35px;float: right"></span>
+                                <input type="password" class="form-control" id="userPwd" style="font-size: 25px;">
+                            </div>
+                            <div class="row top-margin">
+                                <div class="col-lg-8 text-left" style=" padding-left: 40px;padding-right: 50px;margin-right: -35px;">
+                                    <label>请输入验证码<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="securityCode">
+                                </div>
+                                <div class="col-lg-4 text-right">
+                                    <button class="btn btn-action" style=" margin-top: 22px;margin-left: 8px; " >发送验证码</button>
+                                </div>
+                            </div>
+
+                            <hr style="width: 460px;">
+
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <b><a href="forgetPwd.html" style="color: #FF9B22; margin-left: 25px;">忘记密码？</a></b>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-12 text-right">
+                                    <input type="button" class="btn btn-action" value="立即登陆" onclick="login()"
+                                            style="background: #3b8cff;margin-right: 40px;border-right-width: 100px;padding-right: 200px;padding-left: 195px;margin-top: 10px;border-top-width: 5px;padding-top: 12px;margin-bottom: 10px;padding-bottom: 12px;margin-left: 21px;font-size: 16px;">
+                                    </input>
+                                    <script>
+                                        function login() {
+                                            var userName = document.getElementById("userName");
+                                            var userPwd = document.getElementById("userPwd");
+                                            var securityCode = document.getElementById("securityCode");
+                                            //var x=userName.value;
+                                            if (userName.value != "" && userPwd.value != "" && securityCode.value != "") {
+                                                $.post('/loginJudge', {user_name: userName.value,user_pwd:userPwd.value},
+                                                        function (resultMsg) {
+                                                            if(resultMsg=="密码错误") {
+                                                                document.getElementById("worringMsg").innerHTML = resultMsg;
+                                                                document.getElementById("userPwd").value = "";
+                                                            }else {
+                                                                if(resultMsg=="互金平台用户"){
+                                                                    window.location.href = './users/personalCenter.html', true;
+                                                                }else{
+                                                                    window.location.href = './users/lawyerCenter.html', true;
+                                                                }
+                                                            }
+                                                        });
+                                            }
+                                            else {
+                                                alert("Please input the true words!");
+                                            }
+                                        }
+                                    </script>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+
+        </article>
+        <!-- /Article -->
+
+    </div>
+</div>    <!-- /container -->
+
+
+<footer id="footer" class="top-space">
+
+    <div class="footer1" style="margin-top: 150px;padding-top: 10px;height: 170px;">
+        <div class="container">
+            <div class="row" style="height: 130px;margin-top: 5px;">
+                <div class="col-md-2 widget">
+                    <img src="assets/images/kefu.png" alt="Progressus HTML5 template"
+                         style="float:left; width:25px;  margin-left: 20px;margin-top: 18px;">
+                    <h3 class="widget-title">24小时在线客服</h3>
+                </div>
+
+                <div align="center">
+                    <div class="col-md-2 widget">
+                        <img src="assets/images/u93.jpg" alt="Progressus HTML5 template"
+                             style="float:left;max-width: 68%;margin-left: -15px;margin-top: 20px;">
+                    </div>
+                </div>
+
+                <div class="col-md-5 widget">
+                    <div class="widget-body" class="widget-body" style="margin-top: 20px;margin-left: -60px;">
+                        <p>
+                            版权所有 @ 湖南省长沙市麓川小蚂蚁团队未经许可不得复制、转载或摘编，违者必究！
+                        </p>
+                        <p>
+                            Copyright Changsha City, Hunan Province Lu Chuan Little ants Team Asset Exchange Co.,LTD.
+                            ALL Rights Reserved
+                        </p>
+                        <P>
+                            湘 ICP 证 B2-20120023号   湘 ICP 备 12032241 号-7
+                        </P>
+                    </div>
+                </div>
+
+                <div class="col-md-3 widget">
+                    <TABLE style="BORDER-LEFT: 1px solid;" align=left height=140 borderColor=#232323>
+                        <TBODY>
+                        <TR>
+                            <TD></TD>
+                        </TR>
+                        </TBODY>
+                    </TABLE>
+
+                    <h2 class="widget-title" style="font-size: 25px; color: #FFA800; margin-left: 20px;">131-4207-0166</h2>
+                    <div class="widget-body">
+                        <p style=" font-size: 15px; margin-left: 30px;"> 欢迎致电（0:00~24:00）
+                        </p>
+                    </div>
+                </div>
+
+            </div> <!-- /row of widgets -->
+        </div>
+    </div>
+
+
+    <div class="footer2">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-md-6 widget">
+                    <div class="widget-body">
+                        <p class="simplenav">
+                            <a href="index1.html">首页</a> |
+                            <b><a href="signin.html">登陆</a></b> |
+                            <b><a href="signup.html">注册</a></b>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 widget">
+                    <div class="widget-body">
+                        <p class="text-right">Copyright &copy; 2016, Designed by Wik</a></p>
+                    </div>
+                </div>
+
+            </div> <!-- /row of widgets -->
+        </div>
+    </div>
+
+</footer>
+
+
+<!-- JavaScript libs are placed at the end of the document so the pages load faster -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+<script src="assets/js/headroom.min.js"></script>
+<script src="assets/js/jQuery.headroom.min.js"></script>
+<script src="assets/js/template.js"></script>
+</body>
+</html>
+

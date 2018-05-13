@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="js/jquery-1.9.0.min.js"></script>
+    <script type="text/javascript" src="js/jquery-form.js"></script>
+</head>
+<body>
+<div class="col-md-3">
+    <div class="image">
+        <img id="IDcardImage" src="" alt="请上传图片" style="width: 260px;">
+    </div>
+</div>
+<form method="POST" enctype="multipart/form-data" action="/uploadImage" name="imageupload" id="imageupload">
+    <input type="file" id="file" name="file" onchange="submitImage();" size="30"/>
+</form>
+<script type="text/javascript">
+    function submitImage() {
+        $("#imageupload").ajaxSubmit({
+            url: "/uploadImage", // 请求的url
+            type: "post", // 请求方式
+            dataType: "text", // 响应的数据类型
+            async: true, // 异步
+
+            success: function (data) {
+                alert("回调成功");
+                var json = eval("("+data+")");
+                $("#IDcardImage").attr("src", json.imageurl);
+
+            },
+            error: function () {
+                alert("数据加载失败！");
+            }
+        })
+    }
+    </script>
+
+</body>
+</html>

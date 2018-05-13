@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.no7player.mapper.FinancialuserMapper">
+
+    <resultMap id="BaseResultMap" type="cn.no7player.model.Financialuser">
+        <id column="fiUser_id" jdbcType="INTEGER" property="fiuserId" />
+        <result column="fiUser_email" jdbcType="VARCHAR" property="fiuserEmail" />
+        <result column="fiUser_pwd" jdbcType="VARCHAR" property="fiuserPwd" />
+        <result column="fiUser_image" jdbcType="VARCHAR" property="fiuserImage" />
+        <result column="corp_name" jdbcType="VARCHAR" property="corpName" />
+        <result column="legalPerson_name" jdbcType="VARCHAR" property="legalpersonName" />
+        <result column="legalPerson_IDcard" jdbcType="VARCHAR" property="legalpersonIdcard" />
+        <result column="IDcard_image" jdbcType="VARCHAR" property="idcardImage" />
+        <result column="busiLicen_image" jdbcType="VARCHAR" property="busilicenImage" />
+        <result column="check_result" jdbcType="INTEGER" property="checkResult" />
+        <result column="register_time" jdbcType="TIMESTAMP" property="registerTime" />
+        <result column="submitInfo_time" jdbcType="TIMESTAMP" property="submitinfoTime" />
+        <result column="check_time" jdbcType="TIMESTAMP" property="checkTime" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    fiUser_id, fiUser_email, fiUser_pwd, fiUser_image, corp_name, legalPerson_name, legalPerson_Idcard,
+    IDcard_image, busiLicen_image, check_result
+  </sql>
+
+    <update id="update" parameterType="cn.no7player.model.Financialuser">
+        update financialuser
+        set fiUser_pwd = #{fiuserPwd,jdbcType=VARCHAR}
+        where fiUser_id = #{fiuserId,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="selectByEmail" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from financialuser
+        where fiUser_Email = #{fiuserEmail,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from financialuser
+        where fiUser_id = #{fiuserId,jdbcType=INTEGER}
+    </select>
+
+    <insert id="insertSelective" parameterType="cn.no7player.model.Financialuser">
+        insert into financialuser
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fiuserId != null">
+                fiUser_id,
+            </if>
+            <if test="fiuserEmail != null">
+                fiUser_email,
+            </if>
+            <if test="fiuserPwd != null">
+                fiUser_pwd,
+            </if>
+            <if test="fiuserImage != null">
+                fiUser_image,
+            </if>
+            <if test="corpName != null">
+                corp_name,
+            </if>
+            <if test="legalpersonName != null">
+                legalPerson_name,
+            </if>
+            <if test="legalpersonIdcard != null">
+                legalPerson_IDcard,
+            </if>
+            <if test="idcardImage != null">
+                IDcard_image,
+            </if>
+            <if test="busilicenImage != null">
+                busiLicen_image,
+            </if>
+            <if test="checkResult != null">
+                check_result,
+            </if>
+            <if test="registerTime != null">
+                register_time,
+            </if>
+            <if test="submitinfoTime != null">
+                submitInfo_time,
+            </if>
+            <if test="checkTime != null">
+                check_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fiuserId != null">
+                #{fiuserId,jdbcType=INTEGER},
+            </if>
+            <if test="fiuserEmail != null">
+                #{fiuserEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="fiuserPwd != null">
+                #{fiuserPwd,jdbcType=VARCHAR},
+            </if>
+            <if test="fiuserImage != null">
+                #{fiuserImage,jdbcType=VARCHAR},
+            </if>
+            <if test="corpName != null">
+                #{corpName,jdbcType=VARCHAR},
+            </if>
+            <if test="legalpersonName != null">
+                #{legalpersonName,jdbcType=VARCHAR},
+            </if>
+            <if test="legalpersonIdcard != null">
+                #{legalpersonIdcard,jdbcType=VARCHAR},
+            </if>
+            <if test="idcardImage != null">
+                #{idcardImage,jdbcType=VARCHAR},
+            </if>
+            <if test="busilicenImage != null">
+                #{busilicenImage,jdbcType=VARCHAR},
+            </if>
+            <if test="checkResult != null">
+                #{checkResult,jdbcType=INTEGER},
+            </if>
+            <if test="registerTime != null">
+                #{registerTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="submitinfoTime != null">
+                #{submitinfoTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="checkTime != null">
+                #{checkTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByEmailKeySelective" parameterType="cn.no7player.model.Financialuser">
+        update financialuser
+        <set>
+            <if test="fiuserId != null">
+                fiUser_id = #{fiuserId,jdbcType=INTEGER},
+            </if>
+            <if test="fiuserPwd != null" >
+                fiUser_pwd = #{fiuserPwd,jdbcType=VARCHAR},
+            </if>
+            <if test="fiuserImage != null" >
+                fiUser_image = #{fiuserImage,jdbcType=VARCHAR},
+            </if>
+            <if test="corpName != null" >
+                corp_name = #{corpName,jdbcType=VARCHAR},
+            </if>
+            <if test="legalpersonName != null" >
+                legalPerson_name = #{legalpersonName,jdbcType=VARCHAR},
+            </if>
+            <if test="legalpersonIdcard != null" >
+                legalPerson_IDcard = #{legalpersonIdcard,jdbcType=VARCHAR},
+            </if>
+            <if test="idcardImage != null" >
+                IDcard_image = #{idcardImage,jdbcType=VARCHAR},
+            </if>
+            <if test="busilicenImage != null" >
+                busiLicen_image = #{busilicenImage,jdbcType=VARCHAR},
+            </if>
+            <if test="checkResult != null" >
+                check_result = #{checkResult,jdbcType=INTEGER},
+            </if>
+            <if test="registerTime != null" >
+                register_time = #{registerTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="submitinfoTime != null" >
+                submitInfo_time = #{submitinfoTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="checkTime != null" >
+                check_time = #{checkTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="operator != null">
+                operator = #{operator,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where fiUser_email = #{fiuserEmail,jdbcType=VARCHAR}
+    </update>
+
+    <sql id="Manage_Column_List">
+        fiUser_id, fiUser_email, register_time,submitInfo_time,check_time,check_result,operator
+    </sql>
+
+    <select id="selectAll"  resultMap="BaseResultMap" >
+        select
+        <include refid="Manage_Column_List" />
+        from financialuser order by fiUser_id asc
+    </select>
+
+</mapper>

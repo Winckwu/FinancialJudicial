@@ -1,0 +1,9 @@
+
+.x-navigation > li.xn-logo > a:first-child {
+    background-color: #1d2127;
+}
+.x-navigation.x-navigation-horizontal .xn-icon-button1 > a {
+    padding: 15px 10px;
+    text-align: center;
+    width: 60px;
+}

@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.no7player.mapper.LawyerMapper">
+  <resultMap id="BaseResultMap" type="cn.no7player.model.Lawyer">
+    <id column="lawyer_id" jdbcType="INTEGER" property="lawyerId" />
+    <result column="lawyer_telp" jdbcType="VARCHAR" property="lawyerTelp" />
+    <result column="lawyer_pwd" jdbcType="VARCHAR" property="lawyerPwd" />
+    <result column="lawyer_image" jdbcType="VARCHAR" property="lawyerImage" />
+    <result column="lawyer_name" jdbcType="VARCHAR" property="lawyerName" />
+    <result column="IDcard_number" jdbcType="VARCHAR" property="idcardNumber" />
+    <result column="IDcard_image" jdbcType="VARCHAR" property="idcardImage" />
+    <result column="lawyer_license" jdbcType="VARCHAR" property="lawyerLicense" />
+    <result column="office" jdbcType="VARCHAR" property="office" />
+    <result column="work_exp" jdbcType="VARCHAR" property="workExp" />
+    <result column="specialized_areas" jdbcType="VARCHAR" property="specializedAreas" />
+    <result column="check_result" jdbcType="INTEGER" property="checkResult" />
+    <result column="register_time" jdbcType="TIMESTAMP" property="registerTime" />
+    <result column="submitInfo_time" jdbcType="TIMESTAMP" property="submitinfoTime" />
+    <result column="check_time" jdbcType="TIMESTAMP" property="checkTime" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+    <result column="join_case" property="joinCase" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    lawyer_id, lawyer_telp, lawyer_pwd, lawyer_image, lawyer_name, IDcard_number, IDcard_image,
+    lawyer_license, office, work_exp, specialized_areas, check_result,join_case
+  </sql>
+
+  <select id="selectByTelp" parameterType="java.lang.String" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List" />
+      from lawyer
+      where lawyer_telp = #{lawyerTelp,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from lawyer
+    where lawyer_id = #{lawyerId,jdbcType=INTEGER}
+  </select>
+
+  <update id="updateByTelpSelective" parameterType="cn.no7player.model.Lawyer">
+    update lawyer
+    <set >
+      <if test="lawyerTelp != null" >
+        lawyer_telp = #{lawyerTelp,jdbcType=VARCHAR},
+      </if>
+      <if test="lawyerPwd != null" >
+        lawyer_pwd = #{lawyerPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="lawyerImage != null" >
+        lawyer_image = #{lawyerImage,jdbcType=VARCHAR},
+      </if>
+      <if test="lawyerName != null" >
+        lawyer_name = #{lawyerName,jdbcType=VARCHAR},
+      </if>
+      <if test="idcardNumber != null" >
+        IDcard_number = #{idcardNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="idcardImage != null" >
+        IDcard_image = #{idcardImage,jdbcType=VARCHAR},
+      </if>
+      <if test="lawyerLicense != null" >
+        lawyer_license = #{lawyerLicense,jdbcType=VARCHAR},
+      </if>
+      <if test="office != null" >
+        office = #{office,jdbcType=VARCHAR},
+      </if>
+      <if test="workExp != null" >
+        work_exp = #{workExp,jdbcType=VARCHAR},
+      </if>
+      <if test="specializedAreas != null" >
+        specialized_areas = #{specializedAreas,jdbcType=VARCHAR},
+      </if>
+      <if test="checkResult != null" >
+        check_result = #{checkResult,jdbcType=INTEGER},
+      </if>
+      <if test="registerTime != null" >
+        register_time = #{registerTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="submitinfoTime != null" >
+        submitInfo_time = #{submitinfoTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="checkTime != null" >
+        check_time = #{checkTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operator != null" >
+        operator = #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="joinCase != null" >
+        join_case = #{joinCase,jdbcType=VARCHAR},
+      </if>
+      <if test="checkAdvice != null" >
+        check_advice = #{checkAdvice,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where lawyer_telp = #{lawyerTelp,jdbcType=VARCHAR}
+  </update>
+
+  <insert id="insertSelective" parameterType="cn.no7player.model.Lawyer">
+    insert into lawyer
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="lawyerId != null">
+        lawyer_id,
+      </if>
+      <if test="lawyerTelp != null">
+        lawyer_telp,
+      </if>
+      <if test="lawyerPwd != null">
+        lawyer_pwd,
+      </if>
+      <if test="lawyerImage != null">
+        lawyer_image,
+      </if>
+      <if test="lawyerName != null">
+        lawyer_name,
+      </if>
+      <if test="idcardNumber != null">
+        IDcard_number,
+      </if>
+      <if test="idcardImage != null">
+        IDcard_image,
+      </if>
+      <if test="lawyerLicense != null">
+        lawyer_license,
+      </if>
+      <if test="office != null">
+        office,
+      </if>
+      <if test="workExp != null">
+        work_exp,
+      </if>
+      <if test="specializedAreas != null">
+        specialized_areas,
+      </if>
+      <if test="checkResult != null">
+        check_result,
+      </if>
+      <if test="registerTime != null">
+        register_time,
+      </if>
+      <if test="submitinfoTime != null">
+        submitInfo_time,
+      </if>
+      <if test="checkTime != null">
+        check_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="lawyerId != null">
+        #{lawyerId,jdbcType=INTEGER},
+      </if>
+      <if test="lawyerTelp != null">
+        #{lawyerTelp,jdbcType=VARCHAR},
+      </if>
+      <if test="lawyerPwd != null">
+        #{lawyerPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="lawyerImage != null">
+        #{lawyerImage,jdbcType=VARCHAR},
+      </if>
+      <if test="lawyerName != null">
+        #{lawyerName,jdbcType=VARCHAR},
+      </if>
+      <if test="idcardNumber != null">
+        #{idcardNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="idcardImage != null">
+        #{idcardImage,jdbcType=VARCHAR},
+      </if>
+      <if test="lawyerLicense != null">
+        #{lawyerLicense,jdbcType=VARCHAR},
+      </if>
+      <if test="office != null">
+        #{office,jdbcType=VARCHAR},
+      </if>
+      <if test="workExp != null">
+        #{workExp,jdbcType=VARCHAR},
+      </if>
+      <if test="specializedAreas != null">
+        #{specializedAreas,jdbcType=VARCHAR},
+      </if>
+      <if test="checkResult != null">
+        #{checkResult,jdbcType=INTEGER},
+      </if>
+      <if test="registerTime != null">
+        #{registerTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="submitinfoTime != null">
+        #{submitinfoTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="checkTime != null">
+        #{checkTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
+  <sql id="Manage_Column_List">
+    lawyer_id,lawyer_name, lawyer_telp, register_time,submitInfo_time,check_time,check_result,operator
+  </sql>
+
+  <select id="selectAll"  resultMap="BaseResultMap" >
+    select
+    <include refid="Manage_Column_List" />
+    from lawyer order by lawyer_id asc
+  </select>
+
+  <select id="selectPidByTelp"  parameterType="string" resultType="java.lang.Integer">
+    select
+    lawyer_id
+    from lawyer
+    WHERE lawyer_telp = #{lawyerTelp,jdbcType=VARCHAR}
+  </select>
+
+
+</mapper>

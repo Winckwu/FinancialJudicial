@@ -1,0 +1,105 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+    <style type="text/css">
+        .dd
+        {
+            background-color: Red;
+        }
+    </style>
+    <script type="text/javascript">
+        var rowcount = 0;
+        var colName = new Array();
+        colName[0] = "col0_";
+        colName[1] = "col1_";
+        colName[2] = "col2_";
+        colName[3] = "col3_";
+
+        function AddRow() {
+            rowcount++;
+            var table = document.getElementById("tb");
+            var tr = document.createElement("tr");
+            tr.id = "newRow_" + rowcount;
+            for (var i = 0; i < colName.length; i++) {
+                var td = document.createElement("td");
+                td.className = 'dd';
+                td.innerHTML = "<input type='text' value='第" + rowcount + "行 第" + (i + 1) + "列" + "' id='" + colName[i] + rowcount + "'/>";
+                tr.appendChild(td);
+            }
+            table.appendChild(tr);
+
+        }
+
+        function RemoveRow() {
+            if (rowcount > 0) {
+                var table = document.getElementById("tb");
+                var tr = document.getElementById("newRow_" + rowcount);
+                if (tr) {
+                    table.removeChild(tr);
+                    rowcount--;
+                }
+            }
+        }
+
+        function GetData() {
+            var result = "";
+            for (var i = 1; i <= rowcount; i++) {
+                for (var j = 0; j < colName.length; j++) {
+                    var id = colName[j] + i;
+                    var obj = document.getElementById(id);
+                    if (obj) {
+                        result += obj.value;
+                        result += ",";
+                    }
+                }
+                result += "|";
+            }
+            return result;
+        }
+
+        function Get() {
+            var ret = GetData();
+            alert(ret);
+        }
+
+        function transfer() {
+            var ret = GetData();
+            document.getElementById("Hidden1").value = ret;
+        }
+    </script>
+</head>
+<body>
+<form id="form1" runat="server">
+    <div>
+        <fieldset style="width: 800px; height: 100%;">
+            <legend>动态添加新行</legend>
+            <div>
+                <input id="Button1" type="button" value="增加新行" onclick="AddRow()" />&nbsp;
+                <input id="Button2" type="button" value="删除一行" onclick="RemoveRow()" />
+                <input id="Button3" type="button" value="提取内容" onclick="Get()" />
+                <input id="Submit1" type="submit" value="传递到后台" onclick="transfer()" />
+            </div>
+            <table id="tb" border="1" style="width: 400px; height: 100%;">
+                <tr>
+                    <th>
+                        列一
+                    </th>
+                    <th>
+                        列二
+                    </th>
+                    <th>
+                        列三
+                    </th>
+                    <th>
+                        列四
+                    </th>
+                </tr>
+            </table>
+        </fieldset>
+    </div>
+    <div id="CodeFile">
+        <input id="Hidden1" type="hidden" runat="server" />
+    </div>
+</form>
+</body>
+</html>

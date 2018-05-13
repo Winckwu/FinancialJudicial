@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.no7player.mapper.StatusMapper">
+
+    <resultMap id="BaseResultMap" type="cn.no7player.model.Status">
+        <id column="status_id" jdbcType="INTEGER" property="statusId" />
+        <result column="status_type" jdbcType="INTEGER" property="statusType" />
+        <result column="status_time" jdbcType="TIMESTAMP" property="statusTime" />
+        <result column="case_id" jdbcType="INTEGER" property="caseId" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        status_id, status_type, status_time, case_id
+    </sql>
+
+    <insert id="insertSelective" parameterType="cn.no7player.model.Status">
+        insert into status
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="statusId != null">
+                status_id,
+            </if>
+            <if test="statusType != null">
+                status_type,
+            </if>
+            <if test="statusTime != null">
+                status_time,
+            </if>
+            <if test="caseId != null">
+                case_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="statusId != null">
+                #{statusId,jdbcType=INTEGER},
+            </if>
+            <if test="statusType != null">
+                #{statusType,jdbcType=INTEGER},
+            </if>
+            <if test="statusTime != null">
+                #{statusTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="caseId != null">
+                #{caseId,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="selectCaseStatus" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select
+        max(status_type)
+        from status
+        where case_id = #{caseId,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectType4" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select
+        status_id
+        from status
+        where case_id = #{caseId,jdbcType=INTEGER} AND status_type=4
+    </select>
+
+    <select id="selectType5" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select
+        status_id
+        from status
+        where case_id = #{caseId,jdbcType=INTEGER} AND status_type=5
+    </select>
+
+    <select id="selectType6" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from status
+        where case_id = #{caseId,jdbcType=INTEGER} AND status_type=6
+    </select>
+
+    <select id="selectType14" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from status
+        where case_id = #{caseId,jdbcType=INTEGER} AND status_type=14
+    </select>
+
+    <select id="selectStatusByCaseId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from status
+        where case_id = #{caseId,jdbcType=INTEGER} AND status_type IN (1,6,7,8,9,10,11,12,13,14)
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from status
+        where status_id = #{statusId,jdbcType=INTEGER}
+    </delete>
+
+</mapper>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.no7player.mapper.AssignMapper">
+    <resultMap id="BaseResultMap" type="cn.no7player.model.Assign">
+        <id column="assign_id" jdbcType="INTEGER" property="assignId" />
+        <result column="lawyer_id" jdbcType="INTEGER" property="lawyerId" />
+        <result column="case_id" jdbcType="INTEGER" property="caseId" />
+        <result column="depute_time" jdbcType="TIMESTAMP" property="deputeTime" />
+        <result column="is_accept" jdbcType="BIT" property="isAccept" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        assign_id, lawyer_id, case_id, depute_time, is_accept
+    </sql>
+    <insert id="insertSelective" parameterType="cn.no7player.model.Assign">
+        insert into assign
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="assignId != null">
+                assign_id,
+            </if>
+            <if test="lawyerId != null">
+                lawyer_id,
+            </if>
+            <if test="caseId != null">
+                case_id,
+            </if>
+            <if test="deputeTime != null">
+                depute_time,
+            </if>
+            <if test="isAccept != null">
+                is_accept,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="assignId != null">
+                #{assignId,jdbcType=INTEGER},
+            </if>
+            <if test="lawyerId != null">
+                #{lawyerId,jdbcType=INTEGER},
+            </if>
+            <if test="caseId != null">
+                #{caseId,jdbcType=INTEGER},
+            </if>
+            <if test="deputeTime != null">
+                #{deputeTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isAccept != null">
+                #{isAccept,jdbcType=BIT},
+            </if>
+        </trim>
+    </insert>
+
+
+    <select id="selectByLawyerId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from assign
+        where lawyer_id = #{lawyerId,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectByCaseId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from assign
+        where case_id = #{caseId,jdbcType=INTEGER}
+    </select>
+
+    <delete id="deleteByCaseId" parameterType="java.lang.Integer">
+        delete from assign
+        where case_id = #{caseId,jdbcType=INTEGER}
+    </delete>
+
+    <update id="updateByLidAndCid" parameterType="cn.no7player.model.Assign">
+        update assign
+        <set>
+            <if test="deputeTime != null">
+                depute_time = #{deputeTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isAccept != null">
+                is_accept = #{isAccept,jdbcType=BIT},
+            </if>
+        </set>
+        where lawyer_id = #{lawyerId,jdbcType=INTEGER} AND case_id = #{caseId,jdbcType=INTEGER}
+    </update>
+
+</mapper>

@@ -1,0 +1,785 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.no7player.mapper.CasesMapper" >
+  <resultMap id="BaseResultMap" type="cn.no7player.model.Cases" >
+    <id column="case_id" property="caseId" jdbcType="INTEGER" />
+    <result column="lawyer_id" property="lawyerId" jdbcType="INTEGER" />
+    <result column="depute_time" property="deputeTime" jdbcType="TIMESTAMP" />
+    <result column="case_result" property="caseResult" jdbcType="VARCHAR" />
+    <result column="service_type" property="serviceType" jdbcType="VARCHAR" />
+    <result column="contract_num" property="contractNum" jdbcType="VARCHAR" />
+    <result column="debt_plat" property="debtPlat" jdbcType="VARCHAR" />
+    <result column="product_name" property="productName" jdbcType="VARCHAR" />
+    <result column="inver_proj" property="inverProj" jdbcType="VARCHAR" />
+    <result column="inver_name" property="inverName" jdbcType="VARCHAR" />
+    <result column="inver_Idcard" property="inverIdcard" jdbcType="VARCHAR" />
+    <result column="inver_add" property="inverAdd" jdbcType="VARCHAR" />
+    <result column="debt_name" property="debtName" jdbcType="VARCHAR" />
+    <result column="debt_Idcard" property="debtIdcard" jdbcType="VARCHAR" />
+    <result column="debt_add" property="debtAdd" jdbcType="VARCHAR" />
+    <result column="loan_term" property="loanTerm" jdbcType="INTEGER" />
+    <result column="loan_date" property="loanDate" jdbcType="DATE" />
+    <result column="repay_data" property="repayData" jdbcType="DATE" />
+    <result column="overdue_date" property="overdueDate" jdbcType="DATE" />
+    <result column="overdue_days" property="overdueDays" jdbcType="INTEGER" />
+    <result column="contract_money" property="contractMoney" jdbcType="REAL" />
+    <result column="paid_principal" property="paidPrincipal" jdbcType="REAL" />
+    <result column="paid_interest" property="paidInterest" jdbcType="REAL" />
+    <result column="agreed_interest" property="agreedInterest" jdbcType="REAL" />
+    <result column="overdue_rate" property="overdueRate" jdbcType="REAL" />
+    <result column="overdue_penalty" property="overduePenalty" jdbcType="REAL" />
+    <result column="plat_fee" property="platFee" jdbcType="REAL" />
+    <result column="overdue_principal" property="overduePrincipal" jdbcType="REAL" />
+    <result column="overdue_interest" property="overdueInterest" jdbcType="REAL" />
+    <result column="fee_total" property="feeTotal" jdbcType="REAL" />
+    <result column="score" property="score" jdbcType="INTEGER" />
+    <result column="case_file" property="caseFile" jdbcType="VARCHAR" />
+    <result column="fiUser_id" property="fiuserId" jdbcType="INTEGER" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="cn.no7player.model.Cases" extends="BaseResultMap" >
+    <result column="remark" property="remark" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    case_id, lawyer_id, depute_time, case_result, service_type, contract_num, debt_plat, 
+    product_name, inver_proj, inver_name, inver_Idcard, inver_add, debt_name, debt_Idcard, 
+    debt_add, loan_term, loan_date, repay_data, overdue_date, overdue_days, contract_money, 
+    paid_principal, paid_interest, agreed_interest, overdue_rate, overdue_penalty, plat_fee, 
+    overdue_principal, overdue_interest, fee_total, score, case_file, fiUser_id, operator
+  </sql>
+  <sql id="Blob_Column_List" >
+    remark
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="cn.no7player.model.CasesExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from cases
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.no7player.model.CasesExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from cases
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from cases
+    where case_id = #{caseId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from cases
+    where case_id = #{caseId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="cn.no7player.model.CasesExample" >
+    delete from cases
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="cn.no7player.model.Cases" >
+    insert into cases (case_id, lawyer_id, depute_time, 
+      case_result, service_type, contract_num, 
+      debt_plat, product_name, inver_proj, 
+      inver_name, inver_Idcard, inver_add, 
+      debt_name, debt_Idcard, debt_add, 
+      loan_term, loan_date, repay_data, 
+      overdue_date, overdue_days, contract_money, 
+      paid_principal, paid_interest, agreed_interest, 
+      overdue_rate, overdue_penalty, plat_fee, 
+      overdue_principal, overdue_interest, fee_total, 
+      score, case_file, fiUser_id, 
+      operator, remark)
+    values (#{caseId,jdbcType=INTEGER}, #{lawyerId,jdbcType=INTEGER}, #{deputeTime,jdbcType=TIMESTAMP}, 
+      #{caseResult,jdbcType=VARCHAR}, #{serviceType,jdbcType=VARCHAR}, #{contractNum,jdbcType=VARCHAR}, 
+      #{debtPlat,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, #{inverProj,jdbcType=VARCHAR}, 
+      #{inverName,jdbcType=VARCHAR}, #{inverIdcard,jdbcType=VARCHAR}, #{inverAdd,jdbcType=VARCHAR}, 
+      #{debtName,jdbcType=VARCHAR}, #{debtIdcard,jdbcType=VARCHAR}, #{debtAdd,jdbcType=VARCHAR}, 
+      #{loanTerm,jdbcType=INTEGER}, #{loanDate,jdbcType=DATE}, #{repayData,jdbcType=DATE}, 
+      #{overdueDate,jdbcType=DATE}, #{overdueDays,jdbcType=INTEGER}, #{contractMoney,jdbcType=REAL}, 
+      #{paidPrincipal,jdbcType=REAL}, #{paidInterest,jdbcType=REAL}, #{agreedInterest,jdbcType=REAL}, 
+      #{overdueRate,jdbcType=REAL}, #{overduePenalty,jdbcType=REAL}, #{platFee,jdbcType=REAL}, 
+      #{overduePrincipal,jdbcType=REAL}, #{overdueInterest,jdbcType=REAL}, #{feeTotal,jdbcType=REAL}, 
+      #{score,jdbcType=INTEGER}, #{caseFile,jdbcType=VARCHAR}, #{fiuserId,jdbcType=INTEGER}, 
+      #{operator,jdbcType=VARCHAR}, #{remark,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.no7player.model.Cases" >
+    insert into cases
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="caseId != null" >
+        case_id,
+      </if>
+      <if test="lawyerId != null" >
+        lawyer_id,
+      </if>
+      <if test="deputeTime != null" >
+        depute_time,
+      </if>
+      <if test="caseResult != null" >
+        case_result,
+      </if>
+      <if test="serviceType != null" >
+        service_type,
+      </if>
+      <if test="contractNum != null" >
+        contract_num,
+      </if>
+      <if test="debtPlat != null" >
+        debt_plat,
+      </if>
+      <if test="productName != null" >
+        product_name,
+      </if>
+      <if test="inverProj != null" >
+        inver_proj,
+      </if>
+      <if test="inverName != null" >
+        inver_name,
+      </if>
+      <if test="inverIdcard != null" >
+        inver_Idcard,
+      </if>
+      <if test="inverAdd != null" >
+        inver_add,
+      </if>
+      <if test="debtName != null" >
+        debt_name,
+      </if>
+      <if test="debtIdcard != null" >
+        debt_Idcard,
+      </if>
+      <if test="debtAdd != null" >
+        debt_add,
+      </if>
+      <if test="loanTerm != null" >
+        loan_term,
+      </if>
+      <if test="loanDate != null" >
+        loan_date,
+      </if>
+      <if test="repayData != null" >
+        repay_data,
+      </if>
+      <if test="overdueDate != null" >
+        overdue_date,
+      </if>
+      <if test="overdueDays != null" >
+        overdue_days,
+      </if>
+      <if test="contractMoney != null" >
+        contract_money,
+      </if>
+      <if test="paidPrincipal != null" >
+        paid_principal,
+      </if>
+      <if test="paidInterest != null" >
+        paid_interest,
+      </if>
+      <if test="agreedInterest != null" >
+        agreed_interest,
+      </if>
+      <if test="overdueRate != null" >
+        overdue_rate,
+      </if>
+      <if test="overduePenalty != null" >
+        overdue_penalty,
+      </if>
+      <if test="platFee != null" >
+        plat_fee,
+      </if>
+      <if test="overduePrincipal != null" >
+        overdue_principal,
+      </if>
+      <if test="overdueInterest != null" >
+        overdue_interest,
+      </if>
+      <if test="feeTotal != null" >
+        fee_total,
+      </if>
+      <if test="score != null" >
+        score,
+      </if>
+      <if test="caseFile != null" >
+        case_file,
+      </if>
+      <if test="fiuserId != null" >
+        fiUser_id,
+      </if>
+      <if test="operator != null" >
+        operator,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="caseId != null" >
+        #{caseId,jdbcType=INTEGER},
+      </if>
+      <if test="lawyerId != null" >
+        #{lawyerId,jdbcType=INTEGER},
+      </if>
+      <if test="deputeTime != null" >
+        #{deputeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="caseResult != null" >
+        #{caseResult,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceType != null" >
+        #{serviceType,jdbcType=VARCHAR},
+      </if>
+      <if test="contractNum != null" >
+        #{contractNum,jdbcType=VARCHAR},
+      </if>
+      <if test="debtPlat != null" >
+        #{debtPlat,jdbcType=VARCHAR},
+      </if>
+      <if test="productName != null" >
+        #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="inverProj != null" >
+        #{inverProj,jdbcType=VARCHAR},
+      </if>
+      <if test="inverName != null" >
+        #{inverName,jdbcType=VARCHAR},
+      </if>
+      <if test="inverIdcard != null" >
+        #{inverIdcard,jdbcType=VARCHAR},
+      </if>
+      <if test="inverAdd != null" >
+        #{inverAdd,jdbcType=VARCHAR},
+      </if>
+      <if test="debtName != null" >
+        #{debtName,jdbcType=VARCHAR},
+      </if>
+      <if test="debtIdcard != null" >
+        #{debtIdcard,jdbcType=VARCHAR},
+      </if>
+      <if test="debtAdd != null" >
+        #{debtAdd,jdbcType=VARCHAR},
+      </if>
+      <if test="loanTerm != null" >
+        #{loanTerm,jdbcType=INTEGER},
+      </if>
+      <if test="loanDate != null" >
+        #{loanDate,jdbcType=DATE},
+      </if>
+      <if test="repayData != null" >
+        #{repayData,jdbcType=DATE},
+      </if>
+      <if test="overdueDate != null" >
+        #{overdueDate,jdbcType=DATE},
+      </if>
+      <if test="overdueDays != null" >
+        #{overdueDays,jdbcType=INTEGER},
+      </if>
+      <if test="contractMoney != null" >
+        #{contractMoney,jdbcType=REAL},
+      </if>
+      <if test="paidPrincipal != null" >
+        #{paidPrincipal,jdbcType=REAL},
+      </if>
+      <if test="paidInterest != null" >
+        #{paidInterest,jdbcType=REAL},
+      </if>
+      <if test="agreedInterest != null" >
+        #{agreedInterest,jdbcType=REAL},
+      </if>
+      <if test="overdueRate != null" >
+        #{overdueRate,jdbcType=REAL},
+      </if>
+      <if test="overduePenalty != null" >
+        #{overduePenalty,jdbcType=REAL},
+      </if>
+      <if test="platFee != null" >
+        #{platFee,jdbcType=REAL},
+      </if>
+      <if test="overduePrincipal != null" >
+        #{overduePrincipal,jdbcType=REAL},
+      </if>
+      <if test="overdueInterest != null" >
+        #{overdueInterest,jdbcType=REAL},
+      </if>
+      <if test="feeTotal != null" >
+        #{feeTotal,jdbcType=REAL},
+      </if>
+      <if test="score != null" >
+        #{score,jdbcType=INTEGER},
+      </if>
+      <if test="caseFile != null" >
+        #{caseFile,jdbcType=VARCHAR},
+      </if>
+      <if test="fiuserId != null" >
+        #{fiuserId,jdbcType=INTEGER},
+      </if>
+      <if test="operator != null" >
+        #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="cn.no7player.model.CasesExample" resultType="java.lang.Integer" >
+    select count(*) from cases
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update cases
+    <set >
+      <if test="record.caseId != null" >
+        case_id = #{record.caseId,jdbcType=INTEGER},
+      </if>
+      <if test="record.lawyerId != null" >
+        lawyer_id = #{record.lawyerId,jdbcType=INTEGER},
+      </if>
+      <if test="record.deputeTime != null" >
+        depute_time = #{record.deputeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.caseResult != null" >
+        case_result = #{record.caseResult,jdbcType=VARCHAR},
+      </if>
+      <if test="record.serviceType != null" >
+        service_type = #{record.serviceType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contractNum != null" >
+        contract_num = #{record.contractNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.debtPlat != null" >
+        debt_plat = #{record.debtPlat,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productName != null" >
+        product_name = #{record.productName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.inverProj != null" >
+        inver_proj = #{record.inverProj,jdbcType=VARCHAR},
+      </if>
+      <if test="record.inverName != null" >
+        inver_name = #{record.inverName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.inverIdcard != null" >
+        inver_Idcard = #{record.inverIdcard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.inverAdd != null" >
+        inver_add = #{record.inverAdd,jdbcType=VARCHAR},
+      </if>
+      <if test="record.debtName != null" >
+        debt_name = #{record.debtName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.debtIdcard != null" >
+        debt_Idcard = #{record.debtIdcard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.debtAdd != null" >
+        debt_add = #{record.debtAdd,jdbcType=VARCHAR},
+      </if>
+      <if test="record.loanTerm != null" >
+        loan_term = #{record.loanTerm,jdbcType=INTEGER},
+      </if>
+      <if test="record.loanDate != null" >
+        loan_date = #{record.loanDate,jdbcType=DATE},
+      </if>
+      <if test="record.repayData != null" >
+        repay_data = #{record.repayData,jdbcType=DATE},
+      </if>
+      <if test="record.overdueDate != null" >
+        overdue_date = #{record.overdueDate,jdbcType=DATE},
+      </if>
+      <if test="record.overdueDays != null" >
+        overdue_days = #{record.overdueDays,jdbcType=INTEGER},
+      </if>
+      <if test="record.contractMoney != null" >
+        contract_money = #{record.contractMoney,jdbcType=REAL},
+      </if>
+      <if test="record.paidPrincipal != null" >
+        paid_principal = #{record.paidPrincipal,jdbcType=REAL},
+      </if>
+      <if test="record.paidInterest != null" >
+        paid_interest = #{record.paidInterest,jdbcType=REAL},
+      </if>
+      <if test="record.agreedInterest != null" >
+        agreed_interest = #{record.agreedInterest,jdbcType=REAL},
+      </if>
+      <if test="record.overdueRate != null" >
+        overdue_rate = #{record.overdueRate,jdbcType=REAL},
+      </if>
+      <if test="record.overduePenalty != null" >
+        overdue_penalty = #{record.overduePenalty,jdbcType=REAL},
+      </if>
+      <if test="record.platFee != null" >
+        plat_fee = #{record.platFee,jdbcType=REAL},
+      </if>
+      <if test="record.overduePrincipal != null" >
+        overdue_principal = #{record.overduePrincipal,jdbcType=REAL},
+      </if>
+      <if test="record.overdueInterest != null" >
+        overdue_interest = #{record.overdueInterest,jdbcType=REAL},
+      </if>
+      <if test="record.feeTotal != null" >
+        fee_total = #{record.feeTotal,jdbcType=REAL},
+      </if>
+      <if test="record.score != null" >
+        score = #{record.score,jdbcType=INTEGER},
+      </if>
+      <if test="record.caseFile != null" >
+        case_file = #{record.caseFile,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fiuserId != null" >
+        fiUser_id = #{record.fiuserId,jdbcType=INTEGER},
+      </if>
+      <if test="record.operator != null" >
+        operator = #{record.operator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update cases
+    set case_id = #{record.caseId,jdbcType=INTEGER},
+      lawyer_id = #{record.lawyerId,jdbcType=INTEGER},
+      depute_time = #{record.deputeTime,jdbcType=TIMESTAMP},
+      case_result = #{record.caseResult,jdbcType=VARCHAR},
+      service_type = #{record.serviceType,jdbcType=VARCHAR},
+      contract_num = #{record.contractNum,jdbcType=VARCHAR},
+      debt_plat = #{record.debtPlat,jdbcType=VARCHAR},
+      product_name = #{record.productName,jdbcType=VARCHAR},
+      inver_proj = #{record.inverProj,jdbcType=VARCHAR},
+      inver_name = #{record.inverName,jdbcType=VARCHAR},
+      inver_Idcard = #{record.inverIdcard,jdbcType=VARCHAR},
+      inver_add = #{record.inverAdd,jdbcType=VARCHAR},
+      debt_name = #{record.debtName,jdbcType=VARCHAR},
+      debt_Idcard = #{record.debtIdcard,jdbcType=VARCHAR},
+      debt_add = #{record.debtAdd,jdbcType=VARCHAR},
+      loan_term = #{record.loanTerm,jdbcType=INTEGER},
+      loan_date = #{record.loanDate,jdbcType=DATE},
+      repay_data = #{record.repayData,jdbcType=DATE},
+      overdue_date = #{record.overdueDate,jdbcType=DATE},
+      overdue_days = #{record.overdueDays,jdbcType=INTEGER},
+      contract_money = #{record.contractMoney,jdbcType=REAL},
+      paid_principal = #{record.paidPrincipal,jdbcType=REAL},
+      paid_interest = #{record.paidInterest,jdbcType=REAL},
+      agreed_interest = #{record.agreedInterest,jdbcType=REAL},
+      overdue_rate = #{record.overdueRate,jdbcType=REAL},
+      overdue_penalty = #{record.overduePenalty,jdbcType=REAL},
+      plat_fee = #{record.platFee,jdbcType=REAL},
+      overdue_principal = #{record.overduePrincipal,jdbcType=REAL},
+      overdue_interest = #{record.overdueInterest,jdbcType=REAL},
+      fee_total = #{record.feeTotal,jdbcType=REAL},
+      score = #{record.score,jdbcType=INTEGER},
+      case_file = #{record.caseFile,jdbcType=VARCHAR},
+      fiUser_id = #{record.fiuserId,jdbcType=INTEGER},
+      operator = #{record.operator,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update cases
+    set case_id = #{record.caseId,jdbcType=INTEGER},
+      lawyer_id = #{record.lawyerId,jdbcType=INTEGER},
+      depute_time = #{record.deputeTime,jdbcType=TIMESTAMP},
+      case_result = #{record.caseResult,jdbcType=VARCHAR},
+      service_type = #{record.serviceType,jdbcType=VARCHAR},
+      contract_num = #{record.contractNum,jdbcType=VARCHAR},
+      debt_plat = #{record.debtPlat,jdbcType=VARCHAR},
+      product_name = #{record.productName,jdbcType=VARCHAR},
+      inver_proj = #{record.inverProj,jdbcType=VARCHAR},
+      inver_name = #{record.inverName,jdbcType=VARCHAR},
+      inver_Idcard = #{record.inverIdcard,jdbcType=VARCHAR},
+      inver_add = #{record.inverAdd,jdbcType=VARCHAR},
+      debt_name = #{record.debtName,jdbcType=VARCHAR},
+      debt_Idcard = #{record.debtIdcard,jdbcType=VARCHAR},
+      debt_add = #{record.debtAdd,jdbcType=VARCHAR},
+      loan_term = #{record.loanTerm,jdbcType=INTEGER},
+      loan_date = #{record.loanDate,jdbcType=DATE},
+      repay_data = #{record.repayData,jdbcType=DATE},
+      overdue_date = #{record.overdueDate,jdbcType=DATE},
+      overdue_days = #{record.overdueDays,jdbcType=INTEGER},
+      contract_money = #{record.contractMoney,jdbcType=REAL},
+      paid_principal = #{record.paidPrincipal,jdbcType=REAL},
+      paid_interest = #{record.paidInterest,jdbcType=REAL},
+      agreed_interest = #{record.agreedInterest,jdbcType=REAL},
+      overdue_rate = #{record.overdueRate,jdbcType=REAL},
+      overdue_penalty = #{record.overduePenalty,jdbcType=REAL},
+      plat_fee = #{record.platFee,jdbcType=REAL},
+      overdue_principal = #{record.overduePrincipal,jdbcType=REAL},
+      overdue_interest = #{record.overdueInterest,jdbcType=REAL},
+      fee_total = #{record.feeTotal,jdbcType=REAL},
+      score = #{record.score,jdbcType=INTEGER},
+      case_file = #{record.caseFile,jdbcType=VARCHAR},
+      fiUser_id = #{record.fiuserId,jdbcType=INTEGER},
+      operator = #{record.operator,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.no7player.model.Cases" >
+    update cases
+    <set >
+      <if test="lawyerId != null" >
+        lawyer_id = #{lawyerId,jdbcType=INTEGER},
+      </if>
+      <if test="deputeTime != null" >
+        depute_time = #{deputeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="caseResult != null" >
+        case_result = #{caseResult,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceType != null" >
+        service_type = #{serviceType,jdbcType=VARCHAR},
+      </if>
+      <if test="contractNum != null" >
+        contract_num = #{contractNum,jdbcType=VARCHAR},
+      </if>
+      <if test="debtPlat != null" >
+        debt_plat = #{debtPlat,jdbcType=VARCHAR},
+      </if>
+      <if test="productName != null" >
+        product_name = #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="inverProj != null" >
+        inver_proj = #{inverProj,jdbcType=VARCHAR},
+      </if>
+      <if test="inverName != null" >
+        inver_name = #{inverName,jdbcType=VARCHAR},
+      </if>
+      <if test="inverIdcard != null" >
+        inver_Idcard = #{inverIdcard,jdbcType=VARCHAR},
+      </if>
+      <if test="inverAdd != null" >
+        inver_add = #{inverAdd,jdbcType=VARCHAR},
+      </if>
+      <if test="debtName != null" >
+        debt_name = #{debtName,jdbcType=VARCHAR},
+      </if>
+      <if test="debtIdcard != null" >
+        debt_Idcard = #{debtIdcard,jdbcType=VARCHAR},
+      </if>
+      <if test="debtAdd != null" >
+        debt_add = #{debtAdd,jdbcType=VARCHAR},
+      </if>
+      <if test="loanTerm != null" >
+        loan_term = #{loanTerm,jdbcType=INTEGER},
+      </if>
+      <if test="loanDate != null" >
+        loan_date = #{loanDate,jdbcType=DATE},
+      </if>
+      <if test="repayData != null" >
+        repay_data = #{repayData,jdbcType=DATE},
+      </if>
+      <if test="overdueDate != null" >
+        overdue_date = #{overdueDate,jdbcType=DATE},
+      </if>
+      <if test="overdueDays != null" >
+        overdue_days = #{overdueDays,jdbcType=INTEGER},
+      </if>
+      <if test="contractMoney != null" >
+        contract_money = #{contractMoney,jdbcType=REAL},
+      </if>
+      <if test="paidPrincipal != null" >
+        paid_principal = #{paidPrincipal,jdbcType=REAL},
+      </if>
+      <if test="paidInterest != null" >
+        paid_interest = #{paidInterest,jdbcType=REAL},
+      </if>
+      <if test="agreedInterest != null" >
+        agreed_interest = #{agreedInterest,jdbcType=REAL},
+      </if>
+      <if test="overdueRate != null" >
+        overdue_rate = #{overdueRate,jdbcType=REAL},
+      </if>
+      <if test="overduePenalty != null" >
+        overdue_penalty = #{overduePenalty,jdbcType=REAL},
+      </if>
+      <if test="platFee != null" >
+        plat_fee = #{platFee,jdbcType=REAL},
+      </if>
+      <if test="overduePrincipal != null" >
+        overdue_principal = #{overduePrincipal,jdbcType=REAL},
+      </if>
+      <if test="overdueInterest != null" >
+        overdue_interest = #{overdueInterest,jdbcType=REAL},
+      </if>
+      <if test="feeTotal != null" >
+        fee_total = #{feeTotal,jdbcType=REAL},
+      </if>
+      <if test="score != null" >
+        score = #{score,jdbcType=INTEGER},
+      </if>
+      <if test="caseFile != null" >
+        case_file = #{caseFile,jdbcType=VARCHAR},
+      </if>
+      <if test="fiuserId != null" >
+        fiUser_id = #{fiuserId,jdbcType=INTEGER},
+      </if>
+      <if test="operator != null" >
+        operator = #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where case_id = #{caseId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.no7player.model.Cases" >
+    update cases
+    set lawyer_id = #{lawyerId,jdbcType=INTEGER},
+      depute_time = #{deputeTime,jdbcType=TIMESTAMP},
+      case_result = #{caseResult,jdbcType=VARCHAR},
+      service_type = #{serviceType,jdbcType=VARCHAR},
+      contract_num = #{contractNum,jdbcType=VARCHAR},
+      debt_plat = #{debtPlat,jdbcType=VARCHAR},
+      product_name = #{productName,jdbcType=VARCHAR},
+      inver_proj = #{inverProj,jdbcType=VARCHAR},
+      inver_name = #{inverName,jdbcType=VARCHAR},
+      inver_Idcard = #{inverIdcard,jdbcType=VARCHAR},
+      inver_add = #{inverAdd,jdbcType=VARCHAR},
+      debt_name = #{debtName,jdbcType=VARCHAR},
+      debt_Idcard = #{debtIdcard,jdbcType=VARCHAR},
+      debt_add = #{debtAdd,jdbcType=VARCHAR},
+      loan_term = #{loanTerm,jdbcType=INTEGER},
+      loan_date = #{loanDate,jdbcType=DATE},
+      repay_data = #{repayData,jdbcType=DATE},
+      overdue_date = #{overdueDate,jdbcType=DATE},
+      overdue_days = #{overdueDays,jdbcType=INTEGER},
+      contract_money = #{contractMoney,jdbcType=REAL},
+      paid_principal = #{paidPrincipal,jdbcType=REAL},
+      paid_interest = #{paidInterest,jdbcType=REAL},
+      agreed_interest = #{agreedInterest,jdbcType=REAL},
+      overdue_rate = #{overdueRate,jdbcType=REAL},
+      overdue_penalty = #{overduePenalty,jdbcType=REAL},
+      plat_fee = #{platFee,jdbcType=REAL},
+      overdue_principal = #{overduePrincipal,jdbcType=REAL},
+      overdue_interest = #{overdueInterest,jdbcType=REAL},
+      fee_total = #{feeTotal,jdbcType=REAL},
+      score = #{score,jdbcType=INTEGER},
+      case_file = #{caseFile,jdbcType=VARCHAR},
+      fiUser_id = #{fiuserId,jdbcType=INTEGER},
+      operator = #{operator,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=LONGVARCHAR}
+    where case_id = #{caseId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.no7player.model.Cases" >
+    update cases
+    set lawyer_id = #{lawyerId,jdbcType=INTEGER},
+      depute_time = #{deputeTime,jdbcType=TIMESTAMP},
+      case_result = #{caseResult,jdbcType=VARCHAR},
+      service_type = #{serviceType,jdbcType=VARCHAR},
+      contract_num = #{contractNum,jdbcType=VARCHAR},
+      debt_plat = #{debtPlat,jdbcType=VARCHAR},
+      product_name = #{productName,jdbcType=VARCHAR},
+      inver_proj = #{inverProj,jdbcType=VARCHAR},
+      inver_name = #{inverName,jdbcType=VARCHAR},
+      inver_Idcard = #{inverIdcard,jdbcType=VARCHAR},
+      inver_add = #{inverAdd,jdbcType=VARCHAR},
+      debt_name = #{debtName,jdbcType=VARCHAR},
+      debt_Idcard = #{debtIdcard,jdbcType=VARCHAR},
+      debt_add = #{debtAdd,jdbcType=VARCHAR},
+      loan_term = #{loanTerm,jdbcType=INTEGER},
+      loan_date = #{loanDate,jdbcType=DATE},
+      repay_data = #{repayData,jdbcType=DATE},
+      overdue_date = #{overdueDate,jdbcType=DATE},
+      overdue_days = #{overdueDays,jdbcType=INTEGER},
+      contract_money = #{contractMoney,jdbcType=REAL},
+      paid_principal = #{paidPrincipal,jdbcType=REAL},
+      paid_interest = #{paidInterest,jdbcType=REAL},
+      agreed_interest = #{agreedInterest,jdbcType=REAL},
+      overdue_rate = #{overdueRate,jdbcType=REAL},
+      overdue_penalty = #{overduePenalty,jdbcType=REAL},
+      plat_fee = #{platFee,jdbcType=REAL},
+      overdue_principal = #{overduePrincipal,jdbcType=REAL},
+      overdue_interest = #{overdueInterest,jdbcType=REAL},
+      fee_total = #{feeTotal,jdbcType=REAL},
+      score = #{score,jdbcType=INTEGER},
+      case_file = #{caseFile,jdbcType=VARCHAR},
+      fiUser_id = #{fiuserId,jdbcType=INTEGER},
+      operator = #{operator,jdbcType=VARCHAR}
+    where case_id = #{caseId,jdbcType=INTEGER}
+  </update>
+</mapper>

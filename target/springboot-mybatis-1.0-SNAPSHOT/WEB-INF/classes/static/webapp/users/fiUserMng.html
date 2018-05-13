@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- META SECTION -->
+    <title>互金用户管理 - 后台管理系统</title>
+    <link rel="shortcut icon" href="../assets/images/gt_header.png">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <link rel="icon" href="favicon.ico" type="image/x-icon"/>
+    <!-- END META SECTION -->
+
+    <!-- CSS INCLUDE -->
+    <link rel="stylesheet" type="text/css" id="theme" href="css/theme-default.css"/>
+    <!-- EOF CSS INCLUDE -->
+    <script>
+        /*$(function () { $('#myModal').modal({
+         keyboard: true
+         })});*/
+        function alertemail(node) {
+            var s = node.parentNode.parentNode;
+            var s1 = s.cells[1].childNodes["0"].data;
+            document.getElementById("usernametop").innerHTML = s1;
+            $.post('/showFiuserDetail', {fiusername: s1}, function (userMessage) {
+                var strArr = userMessage.split("|");
+                document.getElementById("corp_name").innerHTML = strArr[0];
+                document.getElementById("legalPerson_name").innerHTML = strArr[1];
+                document.getElementById("legalPerson_IDcard").innerHTML = strArr[2];
+                document.getElementById("IDcardImage").src = strArr[3];
+                document.getElementById("busiLicenImage").src = strArr[4];
+            })
+        }
+        function begincheck(node) {
+            var s = node.parentNode.parentNode;
+            var s1 = s.cells[1].childNodes["0"].data;
+            document.getElementById("usernametop1").innerHTML = s1;
+        }
+        function submitcheck() {
+            var username = document.getElementById("usernametop1").innerText;
+            var myselect = document.getElementById("checkresult");
+            var index = myselect.selectedIndex;
+            var checkresult = myselect.options[index].value;
+            /*alert(username);*/
+            $.post('/submitFiuserCheck', {fiusername: username, checkresult: checkresult}, function (data) {
+                layer.msg("审核结果已提交");
+            })
+        }
+
+
+    </script>
+</head>
+<body onload="load()">
+<!-- START PAGE CONTAINER -->
+<div class="page-container">
+
+    <!-- START PAGE SIDEBAR -->
+    <div class="page-sidebar">
+        <!-- START X-NAVIGATION -->
+        <ul class="x-navigation">
+            <li class="xn-logo">
+                <a href="personalCenter.html" style="background-color: #1d2127;">
+                    <img src="../assets/images/logo.png"
+                         style="width: 220px;margin-top: -10px;margin-left: -16px;"></a>
+                <a href="#" class="x-navigation-control"></a>
+            </li>
+            <li class="xn-profile">
+                <a href="#" class="profile-mini">
+                    <img src="assets/images/users/user.jpg" alt="John Doe"/>
+                </a>
+                <div class="profile">
+                    <div class="profile-image">
+                        <a href="" target="_blank"> <img src="assets/images/users/user.jpg" alt="John Doe"
+                                                         style="margin-top: 10px;"/></a>
+                    </div>
+                    <div class="profile-data">
+                        <div class="profile-data-name" id="leftAdminName" style="margin-top: 5px;"></div>
+                    </div>
+
+                </div>
+            </li>
+            <li class="xn-title" style="padding-top: 15px;padding-bottom: 15px;text-align: center;">欢迎来到后台管理系统</li>
+
+            <li class="xn-openable active">
+                <a href="fiUserMng.html"><span class="fa fa-user"></span> <span class="xn-text"
+                                                                                style="font-size: 15px;">用户管理</span></a>
+                <ul>
+                    <li class="active"><a href="fiUserMng.html"><span class="fa fa-group"></span> 互金平台</a></li>
+                    <li><a href="lawyerMng.html"><span class="fa fa-male"></span> 律师用户</a></li>
+                </ul>
+            </li>
+
+            <li>
+                <a href="adminSecurity.html"><span class="fa fa-cogs"></span> <span class="xn-text"
+                                                                                    style="font-size: 15px;">安全中心</span></a>
+            </li>
+
+            <li>
+                <a href="caseSummary.html"><span class="fa fa-list"></span> <span class="xn-text"
+                                                                                  style="font-size: 15px;">案件摘要</span></a>
+            </li>
+
+            <li>
+                <a href="adminSuits.html"><span class="fa fa-briefcase"></span> <span class="xn-text"
+                                                                        style="font-size: 15px;">诉讼进度</span></a>
+            </li>
+
+        </ul>
+        <!-- END X-NAVIGATION -->
+    </div>
+    <!-- END PAGE SIDEBAR -->
+
+    <!-- PAGE CONTENT -->
+    <div class="page-content">
+
+        <!-- START X-NAVIGATION VERTICAL -->
+        <ul class="x-navigation x-navigation-horizontal x-navigation-panel">
+            <!-- TOGGLE NAVIGATION -->
+            <li class="xn-icon-button">
+                <a href="#" class="x-navigation-minimize"><span class="fa fa-dedent"></span></a>
+            </li>
+            <!-- END TOGGLE NAVIGATION -->
+            <!-- SIGN OUT -->
+            <li class="xn-icon-button pull-right">
+                <a href="#" class="mb-control" data-box="#mb-signout"><span class="fa fa-sign-out"></span></a>
+            </li>
+            <!-- END SIGN OUT -->
+            <!-- MESSAGES -->
+            <li class="xn-icon-button pull-right">
+                <a href="personalCenter.html" id="topAdminName"
+                   style="padding-left: 0px;width: 150px;padding-right: 0px;"></a>
+
+            </li>
+            <!-- END MESSAGES -->
+            <!-- Hello -->
+            <li class="xn-icon-button pull-right">
+                <a style="width: 60px;">您好，</a>
+
+            </li>
+            <!-- END Hello -->
+        </ul>
+        <!-- END X-NAVIGATION VERTICAL -->
+
+
+        <!-- START BREADCRUMB -->
+        <ul class="breadcrumb">
+            <li><a href="#">用户管理</a></li>
+            <li class="active">互金平台</li>
+        </ul>
+        <!-- END BREADCRUMB -->
+
+        <!-- PAGE TITLE -->
+        <div class="page-title">
+            <h2><span class="fa fa-arrow-circle-o-left"></span> 互联网金融台管理</h2>
+        </div>
+        <!-- END PAGE TITLE -->
+
+        <!-- PAGE CONTENT WRAPPER -->
+        <div class="page-content-wrap">
+
+            <div class="row">
+                <div class="col-md-12">
+
+                    <!-- START DATATABLE EXPORT -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title"></h3>
+
+                            <div class="row" style="height: 60px; margin-top: 20px;">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-1">
+                                    <div class="widget-title"
+                                         style=" margin-top: 5px; font-weight: 600;">姓名
+                                    </div>
+                                </div>
+                                <div class="col-md-2" style="left: -25px;">
+                                    <div class="form-group has-warning">
+
+                                        <input type="text" name="corp_name" class="form-control"
+
+                                               value="" style="font-size: 16px;">
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="widget-title" style=" margin-top: 5px; font-weight: 600;">注册时间</div>
+                                </div>
+
+                                <div class="col-md-2" style="left: -55px;">
+                                    <form class="form-horizontal" role="form">
+                                        <div class="form-group has-warning" style="margin-top: -20px;">
+                                            <label class=" control-label"></label>
+                                            <div>
+                                                <input type="text" class="form-control datepicker" value="2016-12-07">
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="widget-title"
+                                         style=" margin-top: 5px; font-weight: 600;margin-left: 10px;">审核状态
+                                    </div>
+                                </div>
+                                <div class="col-md-2" style="left: -85px;margin-top: -5px;">
+                                    <div class="form-group has-warning"
+                                         style="width: 187px;margin-left: -10px;padding-bottom: 5px;padding-top: 5px;">
+                                        <select class="form-control select" style="display: none;">
+                                            <option>请选择</option>
+                                            <option>待审核</option>
+                                            <option>已通过</option>
+                                            <option>未通过</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row" style="height: 60px;">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-1">
+                                    <div class="widget-title"
+                                         style=" margin-top: 5px; font-weight: 600;">手机号
+                                    </div>
+                                </div>
+                                <div class="col-md-2" style="left: -25px;">
+                                    <div class="form-group has-warning">
+
+                                        <input type="text" name="corp_name" class="form-control"
+
+                                               value="" style="font-size: 16px;">
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="widget-title" style=" margin-top: 5px; font-weight: 600;">是否完善信息</div>
+                                </div>
+
+                                <div class="col-md-2" style="margin-top: -5px;left: -55px;">
+                                    <div class="form-group has-warning"
+                                         style="width: 187px;margin-left: -10px;padding-bottom: 5px;padding-top: 5px;">
+                                        <select class="form-control select" style="display: none;">
+                                            <option>请选择</option>
+                                            <option>全部</option>
+                                            <option>已完善</option>
+                                            <option>未完善</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4" style="left: 165px;top: -8px;">
+                                    <button class="btn btn-info btn-block"
+                                            style="font-size: 16px;height: 38px;border-radius: 5px;width: 112px;">
+                                        <i class="glyphicon glyphicon-search"></i>查询
+                                    </button>
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="row" style="margin-top: -5px; margin-bottom: 20px;">
+                                    <div class="btn-group pull-right" style=" left: -80px;">
+                                        <button class="btn btn-danger dropdown-toggle" data-toggle="dropdown"><i
+                                                class="fa fa-bars"></i> 导出数据
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li class="divider"></li>
+                                            <li><a href="#"
+                                                   onClick="$('#customers2 ').tableExport({type:'excel',escape:'false'});"><img
+                                                    src='img/icons/xls.png' width="24"/> Excel</a></li>
+                                            <li><a href="#"
+                                                   onClick="$('#customers2').tableExport({type:'doc',escape:'false'});"><img
+                                                    src='img/icons/word.png' width="24"/> Word</a></li>
+                                            <li><a href="#"
+                                                   onClick="$('#customers2').tableExport({type:'powerpoint',escape:'false'});"><img
+                                                    src='img/icons/ppt.png' width="24"/> PowerPoint</a></li>
+                                            <li class="divider"></li>
+                                            <li><a href="#"
+                                                   onClick="$('#customers2').tableExport({type:'png',escape:'false'});"><img
+                                                    src='img/icons/png.png' width="24"/> PNG</a></li>
+                                            <li><a href="#"
+                                                   onClick="$('#customers2').tableExport({type:'pdf',escape:'false'});"><img
+                                                    src='img/icons/pdf.png' width="24"/> PDF</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div id="customers2" class="panel-body panel-body-table no-footer"
+                                     style=" height: 480px;">
+                                    <div style="overflow-x: auto; overflow-y: hidden;height:440px; ">
+                                        <table class="table " style="padding-left: 10px; padding-right: 10px;">
+                                            <thead>
+                                            <tr>
+                                                <th style="text-align: center;width: 80px;">ID</th>
+                                                <th style="text-align: center;width: 170px;">邮箱</th>
+                                                <th style="text-align: center;width: 170px;">注册时间</th>
+                                                <th style="text-align: center;width: 130px;">累计发布诉讼数</th>
+                                                <th style="text-align: center;width: 120px;">信息提交时间</th>
+                                                <th style="text-align: center;width: 100px;">审核时间</th>
+                                                <th style="text-align: center;width: 75px;">状态</th>
+                                                <th style="text-align: center;width: 75px;">详情</th>
+                                                <th style="text-align: center;width: 80px;">审核</th>
+                                                <th style="text-align: center;width: 80px;">操作人</th>
+                                            </tr>
+                                            </thead>
+                                        </table>
+                                        <div style="overflow-x: hidden; overflow-y: auto;height:440px; ">
+                                            <table class="table datatable_simple"
+                                                   style="padding-left: 10px; padding-right: 10px;">
+                                                <tbody style="text-align: center;">
+                                                </tbody>
+                                            </table>
+
+
+                                        </div>
+                                        <div class="dataTables_paginate paging_simple_numbers" id="customers2_paginate">
+                                            <a class="paginate_button previous disabled" aria-controls="customers2"
+                                               data-dt-idx="0" tabindex="0"
+                                               id="customers2_previous">Previous</a><span><a
+                                                class="paginate_button current" aria-controls="customers2"
+                                                data-dt-idx="1" tabindex="0">1</a><a class="paginate_button "
+                                                                                     aria-controls="customers2"
+                                                                                     data-dt-idx="2"
+                                                                                     tabindex="0">2</a><a
+                                                class="paginate_button " aria-controls="customers2" data-dt-idx="3"
+                                                tabindex="0">3</a><a class="paginate_button " aria-controls="customers2"
+                                                                     data-dt-idx="4" tabindex="0">4</a><a
+                                                class="paginate_button " aria-controls="customers2" data-dt-idx="5"
+                                                tabindex="0">5</a><a class="paginate_button " aria-controls="customers2"
+                                                                     data-dt-idx="6" tabindex="0">6</a></span><a
+                                                class="paginate_button next" aria-controls="customers2" data-dt-idx="7"
+                                                tabindex="0" id="customers2_next">Next</a></div>
+                                    </div>
+                                    <script type="text/javascript">
+                                        function load() {
+                                            var tableDate = "";
+                                            $.get('/userManage', {},
+                                                    function (result_str) {
+                                                        var userArr = eval("(" + result_str + ")");
+                                                        //alert(userArr);
+
+                                                        for (var i = 0; i < userArr.length; i++) {
+                                                            tableDate += "<tr><td>" + userArr[i].userid + "</td>"
+                                                                    + "<td >" + userArr[i].Email + "</td>"
+                                                                    + "<td>" + userArr[i].RegisterTime + "</td>"
+                                                                    + "<td>" + userArr[i].totalcase + "</td>"
+                                                                    + "<td>" + userArr[i].SubmitinfoTime + "</td>"
+                                                                    + "<td>" + userArr[i].CheckTime + "</td>"
+                                                                    + "<td>" + userArr[i].CheckResult + "</td>"
+                                                                    + "<td><button class='btn btn-info btn-sm' id='detail' data-toggle='modal' data-target='#myModal' onclick='alertemail(this)' data-user='张三'>详情</button></td>"
+
+                                                            if (userArr[i].CheckResult == "未审核") {
+                                                                tableDate += "<td><button class='btn btn-info btn-sm' data-toggle='modal' data-target='#myModalcheck' onclick='begincheck(this)'>审核</button></td>"
+                                                            }
+                                                            else {
+                                                                tableDate += "<td><button class='btn btn-info btn-sm'  disabled='disabled' data-toggle='modal' data-target='#myModalcheck' onclick='begincheck(this)'>审核</button></td>"
+                                                            }
+                                                            tableDate += "<td>" + userArr[i].Operator + "</td></tr>"
+
+
+                                                        }
+                                                        $("tbody").html(tableDate);
+                                                    }
+                                            );
+                                            $.get('/getAdminName',
+                                                    function (resultMsg) {
+                                                        document.getElementById("topAdminName").innerHTML = resultMsg;
+                                                        document.getElementById("leftAdminName").innerHTML = resultMsg;
+                                                    }
+                                            )
+                                        }
+
+                                    </script>
+
+                                </div>
+                                <!-- END DATATABLE EXPORT -->
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- END PAGE CONTENT WRAPPER -->
+            </div>
+            <!-- END PAGE CONTENT -->
+        </div>
+        <!-- END PAGE CONTAINER -->
+
+        <!-- MESSAGE BOX-->
+        <div class="message-box animated fadeIn" data-sound="alert" id="mb-signout">
+            <div class="mb-container">
+                <div class="mb-middle">
+                    <div class="mb-title"><span class="fa fa-sign-out"></span> 注 <strong>销</strong> ?</div>
+                    <div class="mb-content">
+                        <p>选择是注销当前用户，选择否将继续停留在该页面。</p>
+
+                    </div>
+                    <div class="mb-footer">
+                        <div class="pull-right">
+                            <a href="backgroundPage.html" class="btn btn-success btn-lg">是</a>
+                            <button class="btn btn-default btn-lg mb-control-close">否</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"
+                                aria-hidden="true">×
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            用户详情
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row" id="submitCheck">
+
+                            <div class="row" style="height: 30px; margin-top: 5px;border-radius: 5px;">
+                                <div class="col-md-1">
+
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="widget-title" style=" margin-top: 10px;    font-weight: 600;">用户名</div>
+                                </div>
+                                <div class="col-md-3" style="height: 25px">
+                                    <div id="usernametop" class="title" name="fiusername"
+                                         style="font-size: 16px; margin-top: 10px;">
+                                        wuqi199509@163.com
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="height: 30px; margin-top: 20px;">
+                                <div class="col-md-1">
+
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="widget-title" style=" margin-top: 5px; font-weight: 600;">企业名称</div>
+
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group has-warning">
+                                        <div id="corp_name" name="corp_name" style="font-size: 16px;">暂无</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="height: 30px; margin-top: 20px;">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-4">
+                                    <div class="widget-title" style=" margin-top: 5px; font-weight: 600;">法人真实姓名</div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group has-warning">
+                                        <div id="legalPerson_name" name="corp_name" style="font-size: 16px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="height: 30px; margin-top: 20px;">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-4">
+                                    <div class="widget-title" style=" margin-top: 5px;font-weight: 600;">法人身份证号</div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group has-warning">
+                                        <div id="legalPerson_IDcard" name="corp_name" style="font-size: 16px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="height: 200px; margin-top: 20px;">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-4">
+                                    <div class="widget-title" style=" margin-top: 85px;font-weight: 600;">法人身份证正面照</div>
+                                    <input type="text" style="display:none" id="IDcardpath" name="IDcardpath" class="form-control" value="" style="font-size: 16px;">
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="image">
+                                        <img id="IDcardImage" src="" alt="暂无照片" style="width: 260px;">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="height: 200px; margin-top: 20px;">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-4">
+                                    <div class="widget-title" style=" margin-top: 85px;font-weight: 600;">企业营业执照正面照</div>
+                                    <input type="text" style="display:none" id="busLicenpath" name="busLicenpath" class="form-control" value="" style="font-size: 16px;">
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="image">
+                                        <img id="busiLicenImage" name="busLicenImage" src="" alt="暂无照片" style="width: 260px;">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+        </div>
+        <div class="modal fade" id="myModalcheck" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+
+                        <h4 class="modal-title" id="myModalLabelcheck">
+                            用户审核
+                        </h4>
+                    </div>
+                    <div class="col-md-3" style="padding-top: 20px">
+                        <label class="widget-title">当前审核用户：</label>
+                    </div>
+                    <div class="col-md-3" style="padding-top: 20px">
+                        <div id="usernametop1" class="title" name="fiusername">wuqi199509@163.com</div>
+                    </div>
+                    <div class="modal-body">
+                        <form role="form" style="padding-top: 40px">
+                            <div class="form-group">
+                                <label style="padding-top: 10px">审核意见:</label>
+                                <input type="text" class="form-control" placeholder="输入审核意见">
+                                <label style="padding-top: 20px">审核结果:</label>
+                                <select id="checkresult" class="form-control select" style="display: none;">
+                                    <option value="0">审核未通过</option>
+                                    <option value="1">审核通过</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default"
+                                data-dismiss="modal" onclick="
+                              window.location.reload();
+                            ">关闭
+                        </button>
+                        <input type="button" class="btn btn-primary" onclick="submitcheck()" value="提交">
+
+                        </input>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+
+        <!-- END MESSAGE BOX-->
+
+        <!-- START PRELOADS -->
+        <audio id="audio-alert" src="audio/alert.mp3" preload="auto"></audio>
+        <audio id="audio-fail" src="audio/fail.mp3" preload="auto"></audio>
+        <!-- END PRELOADS -->
+
+        <!-- START SCRIPTS -->
+        <!-- START PLUGINS -->
+        <script type="text/javascript" src="js/plugins/jquery/jquery.min.js"></script>
+        <script type="text/javascript" src="js/plugins/jquery/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="js/plugins/bootstrap/bootstrap.min.js"></script>
+        <script src="layer/layer.js"></script>
+        <!-- END PLUGINS -->
+
+        <!-- START THIS PAGE PLUGINS-->
+        <script type='text/javascript' src='js/plugins/icheck/icheck.min.js'></script>
+        <script type="text/javascript" src="js/plugins/mcustomscrollbar/jquery.mCustomScrollbar.min.js"></script>
+        <script type="text/javascript" src="js/plugins/bootstrap/bootstrap-datepicker.js"></script>
+        <script type="text/javascript" src="js/plugins/bootstrap/bootstrap-timepicker.min.js"></script>
+        <script type="text/javascript" src="js/plugins/bootstrap/bootstrap-colorpicker.js"></script>
+        <script type="text/javascript" src="js/plugins/bootstrap/bootstrap-file-input.js"></script>
+        <script type="text/javascript" src="js/plugins/bootstrap/bootstrap-select.js"></script>
+        <script type="text/javascript" src="js/plugins/tagsinput/jquery.tagsinput.min.js"></script>
+
+        <script type="text/javascript" src="js/plugins/datatables/jquery.dataTables.min.js"></script>
+
+        <script type="text/javascript" src="js/plugins/tableexport/tableExport.js"></script>
+        <script type="text/javascript" src="js/plugins/tableexport/jquery.base64.js"></script>
+        <script type="text/javascript" src="js/plugins/tableexport/html2canvas.js"></script>
+        <script type="text/javascript" src="js/plugins/tableexport/jspdf/libs/sprintf.js"></script>
+        <script type="text/javascript" src="js/plugins/tableexport/jspdf/jspdf.js"></script>
+        <script type="text/javascript" src="js/plugins/tableexport/jspdf/libs/base64.js"></script>
+        <!-- END THIS PAGE PLUGINS-->
+
+        <!-- START TEMPLATE -->
+        <script type="text/javascript" src="js/settings.js"></script>
+
+        <script type="text/javascript" src="js/plugins.js"></script>
+        <script type="text/javascript" src="js/actions.js"></script>
+        <!-- END TEMPLATE -->
+        <!-- END SCRIPTS -->
+
+</body>
+</html>
+
+
+
+
+
+

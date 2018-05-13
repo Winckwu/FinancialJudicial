@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Sergey Pozhilov (GetTemplate.com)">
+    <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+
+    <title>找回密码--互联网金融司法诉讼平台</title>
+
+    <link rel="shortcut icon" href="assets/images/gt_header.png">
+
+    <link rel="stylesheet" media="screen" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/font-awesome.min.css">
+    <link rel="stylesheet" media="screen" href="assets/css/css.css"/>
+
+    <!-- Custom styles for our template -->
+    <link rel="stylesheet" href="assets/css/bootstrap-theme.css" media="screen">
+    <link rel="stylesheet" href="assets/css/main.css">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="assets/js/html5shiv.js"></script>
+    <script src="assets/js/respond.min.js"></script>
+    <![endif]-->
+
+    <script>
+        function myFunction(){
+            var x=document.getElementById("emailormobile");
+            var y=document.getElementById("emailormobile1");
+            y.value=x.value;
+        }
+
+        /*function changePwd() {
+            var emailormobile=document.getElementById("emailormobile");
+            var newpwd=document.getElementById("newpwd");
+            if(emailormobile.value!=""){
+                $.post('changePwd',{emailormobile:emailormobile.value,newpwd:newpwd.value},function (data) {
+                    alert("login success!");
+                })
+            }
+        }*/
+    </script>
+
+    <script>
+        function pw() {
+            var pw1 = document.getElementById("pwd1").value;
+            var pw2 = document.getElementById("pwd2").value;
+            if(pw1 == pw2) {
+                document.getElementById("tishi").innerHTML="";
+                checkInputInfo();
+            }
+            else {
+                document.getElementById("tishi").innerHTML="两次密码输入不一致";
+                document.getElementById("submitpwd").disabled = true;
+            }
+        }
+        function checkUserName() {
+            var userName = document.getElementById("emailormobile").value;
+            var filter1  = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+            var filter2 = /^1(3|4|5|7|8)\d{9}$/;
+            if (filter1.test(userName)||filter2.test(userName))
+            {
+                $.get('/isExist',{userName:userName},
+                        function (isExist) {
+                            if(isExist=='{"is_exist":true}'){
+                                document.getElementById("worringMsg1").innerHTML = "";
+                                document.getElementById("next1").disabled=false;
+                            }
+                            else {
+                                document.getElementById("worringMsg1").innerHTML = "该账户不存在";
+                                document.getElementById("next1").disabled=true;
+                            }
+                        });
+            }
+            else {
+                document.getElementById("worringMsg1").innerHTML = "您的 邮箱/手机 格式不正确";
+                document.getElementById("next1").disabled=true;
+            }
+        }
+        function checkInputInfo() {
+            var pw1 = document.getElementById("pwd1").value;
+            var pw2 = document.getElementById("pwd2").value;
+            if(document.getElementById("pwd1").value!="")
+                if(document.getElementById("pwd2").value!="")
+                    if(document.getElementById("pwd2").value==document.getElementById("pwd1").value)
+                        {  document.getElementById("submitpwd").disabled=false; return;  }
+            document.getElementById("submitpwd").disabled=true;
+        }
+    </script>
+
+</head>
+
+<body background="assets/images/3.jpg">
+
+<div class="navbar navbar-inverse navbar-fixed-top headroom">
+
+    <div class="container">
+        <!-- <img border='0' src='assets/images/1.jpg' width='100%' height='100%' style='position: absolute;left:0px;top:0px;z-index: -1'> -->
+        <div class="navbar-header">
+            <!-- Button for smallest screens -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><span
+                    class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span></button>
+            <a class="navbar-brand" href="index1.html"><img src="assets/images/finance.png"
+                                                            alt="Progressus HTML5 template"
+                                                            style="float:left; width:50px;margin-top: -11px;">
+                <img src="assets/images/logo.png" alt="Progressus HTML5 template"
+                     style=" width: 400px; margin-top: -25px; "></a>
+
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav pull-right">
+                <li><a class="btn" href="index1.html">首页</a></li>
+                <li><a class="btn" href="signin.html">登陆</a></li>
+                <li><a class="btn" href="signup.html">注册</a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</div>
+<!-- /.navbar -->
+
+<header id="head" class="secondary"></header>
+
+
+<div style="display:none"></div>
+<form id="msform" action="/changePwd" method="post">
+    <!-- progressbar -->
+    <ul id="progressbar" style=" padding-top: 10px;">
+        <li class="active" style="top: -5px;">确认账号</li>
+        <li style="top: -5px;">安全验证</li>
+        <li style="top: -5px;">重置密码</li>
+    </ul>
+    <!-- fieldsets -->
+    <fieldset style="width:440px;text-align: center;margin-left: -16px;">
+        <h2 class="fs-title" style=" font-size: 24px;">确认账号</h2>
+        <h3 class="fs-subtitle">请填写您需要找回的帐号</h3>
+        <div class="top-margin" style=" margin-left: 25px;margin-right: 30px;">
+            <label style="float: left;">请您输入邮箱/手机<span class="text-danger">*</span></label></span></label><span id="worringMsg1" style="font-size: smaller;color: #FF9B22;margin-left:35px"></span>
+            <input id="emailormobile" type="text" class="form-control" name="emailormobile" onkeyup="checkUserName()" onchange="myFunction()">
+        </div>
+        <div class="row top-margin">
+            <div class="col-lg-8 text-left" style=" padding-left: 40px;padding-right: 50px;margin-right: -35px;">
+                <label>请输入验证码<span class="text-danger">*</span></label>
+                <input type="text" class="form-control" >
+            </div>
+            <div class="col-lg-4 text-right">
+                <button class="btn btn-action" style=" margin-top: 22px;" type="submit">pngv</button>
+            </div>
+        </div>
+        <input type="button" name="next" id="next1" class="next action-button" value="下一步" disabled="true"/>
+    </fieldset>
+    <fieldset style="width:440px;text-align: center;margin-left: -16px;">
+        <h2 class="fs-title" style="font-size: 24px;">安全验证</h2>
+        <h3 class="fs-subtitle">为了你的账号安全，请完成身份验证</h3>
+        <div class="top-margin" style=" margin-left: 25px;margin-right: 30px;">
+            <label style="float: left;">通过账号<span class="text-danger">*</span></label>
+            <input id="emailormobile1" type="text" class="form-control" readonly="readonly">
+        </div>
+        <div class="row top-margin">
+            <div class="col-lg-8 text-left" style=" padding-left: 40px;padding-right: 50px;margin-right: -35px;">
+                <label>请输入收到的验证码<span class="text-danger">*</span></label>
+                <input type="text" class="form-control">
+            </div>
+            <div class="col-lg-4 text-right">
+                <button class="btn btn-action" style="margin-top: 22px;padding-right: 20px;padding-left: 20px;">发送验证码</button>
+            </div>
+        </div>
+        <input type="button" name="previous" class="previous action-button" value="上一步"/>
+        <input type="button" name="next" class="next action-button" value="下一步"/>
+    </fieldset>
+    <fieldset style="width:440px;text-align: center;margin-left: -16px;">
+        <h2 class="fs-title" style=" font-size: 24px;">重置密码</h2>
+        <h3 class="fs-subtitle">您正在找回您的账号</h3>
+        <div class="row top-margin" style=" margin-left: 25px;margin-right: 30px;">
+            <label style="float: left;">设置新密码<span class="text-danger">*</span></label>
+            <input type="password" id="pwd1" name="newpwd" onkeyup="pw()" maxlength="18" class="form-control" style="
+    font-size: 18px;"/>
+        </div>
+        <div class="row top-margin" style=" margin-left: 25px;margin-right: 30px; margin-top: 10px;">
+            <label style="float: left;">再次输入密码<span class="text-danger">*</span><span id
+                                                                                              ="tishi" style="font-size: 13px;color: #FF9822;margin-left: 112px;"></span></label>
+            <input type="password" id="pwd2" name="newpwd1" maxlength="18" class="form-control" onkeyup="pw()" style="
+    font-size: 18px;"/>
+        </div>
+        <input type="button" name="previous" class="previous action-button" value="上一步"/>
+        <input type="button" class="next action-button" value="确定" id="submitpwd" disabled="true"/>
+    </fieldset>
+
+    <fieldset style="width:440px;text-align: center;margin-left: -16px;">
+        <h2 class="fs-title" style=" font-size: 24px;">完成设置</h2>
+        <h3 class="fs-subtitle">恭喜您，您的账号重置密码成功</h3>
+        <input type="submit" name="next" class="next action-button" value="确定"/>
+    </fieldset>
+</form>
+
+<style>
+
+    .main {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 20px;
+        width: 100%;
+    }
+</style>
+
+<footer id="footer" class="main" style="top: 600px;">
+    <div class="main"></div>
+    <div class="footer1" style="margin-top: 150px;padding-top: 10px;height: 170px;">
+        <div class="container">
+            <div class="row" style="
+				height: 130px;
+				margin-top: 5px;
+				">
+
+                <div class="col-md-2 widget">
+                    <img src="assets/images/kefu.png" alt="Progressus HTML5 template"
+                         style="float:left; width:25px;  margin-left: 20px;margin-top: 18px;">
+                    <h3 class="widget-title">24小时在线客服</h3>
+                </div>
+
+                <div align="center">
+                    <div class="col-md-2 widget">
+                        <img src="assets/images/u93.jpg" alt="Progressus HTML5 template"
+                             style="float:left;max-width: 68%;margin-left: -15px;margin-top: 20px;">
+                    </div>
+                </div>
+
+                <div class="col-md-5 widget">
+                    <div class="widget-body" class="widget-body" style="margin-top: 20px;margin-left: -60px;">
+                        <p>
+                            版权所有 @ 湖南省长沙市麓川小蚂蚁团队未经许可不得复制、转载或摘编，违者必究！
+                        </p>
+                        <p>
+                            Copyright Changsha City, Hunan Province Lu Chuan Little ants Team Asset Exchange Co.,LTD.
+                            ALL Rights Reserved
+                        </p>
+                        <P>
+                            湘 ICP 证 B2-20120023号   湘 ICP 备 12032241 号-7
+                        </P>
+                    </div>
+                </div>
+
+                <div class="col-md-3 widget">
+                    <TABLE style="BORDER-LEFT: 1px solid;" align=left height=140 borderColor=#232323>
+                        <TBODY>
+                        <TR>
+                            <TD></TD>
+                        </TR>
+                        </TBODY>
+                    </TABLE>
+
+                    <h2 class="widget-title" style="font-size: 25px; color: #FFA800; margin-left: 20px;">
+                        131-4207-0166</h2>
+                    <div class="widget-body">
+                        <p style=" font-size: 15px; margin-left: 30px;"> 欢迎致电（0:00~24:00）
+                        </p>
+                    </div>
+                </div>
+
+            </div> <!-- /row of widgets -->
+        </div>
+    </div>
+
+
+    <div class="footer2">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-md-6 widget">
+                    <div class="widget-body">
+                        <p class="simplenav">
+                            <a href="index1.html">首页</a> |
+                            <b><a href="signin.html">登陆</a></b> |
+                            <b><a href="signup.html">注册</a></b>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 widget">
+                    <div class="widget-body">
+                        <p class="text-right">
+                            Copyright &copy; 2016, Designed by Wik</a>
+                        </p>
+                    </div>
+                </div>
+
+            </div> <!-- /row of widgets -->
+        </div>
+    </div>
+
+</footer>
+
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+<script src="assets/js/headroom.min.js"></script>
+<script src="assets/js/jQuery.headroom.min.js"></script>
+<script src="assets/js/template.js"></script>
+<script src="assets/js/jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="assets/js/jquery.easing.min.js" type="text/javascript"></script>
+<script src="assets/js/jQuery.time.js" type="text/javascript"></script>
+<br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br>
+</body>
+</html>
